@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Xe.Tools.Wpf.Controls.FooterBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Xe.Tools.Wpf.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="23" d:DesignWidth="300" Background="#007ACC" Foreground="White">
+    <UserControl.Template>
+        <ControlTemplate>
+            <DockPanel Background="{Binding Background}">
+                <!-- Padding -->
+                <Control DockPanel.Dock="Left" Width="4"/>
+                <Control DockPanel.Dock="Top" Height="3"/>
+                <Control DockPanel.Dock="Right" Width="4"/>
+                <Control DockPanel.Dock="Bottom" Height="3"/>
+                <!-- Content -->
+                <TextBlock DockPanel.Dock="Left" Text="{Binding Path=Title}"/>
+                <ContentControl HorizontalAlignment="Right" Content="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+            </DockPanel>
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>
