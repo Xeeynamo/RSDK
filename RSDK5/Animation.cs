@@ -32,6 +32,8 @@ namespace RSDK5
     {
         const int MagicCode = 0x00525053;
 
+        private int _unknown;
+
         public List<string> SpriteSheets { get; }
 
         public List<string> CollisionBoxes { get; }
@@ -44,7 +46,7 @@ namespace RSDK5
             if ((magicCode = reader.ReadInt32()) != MagicCode)
                 throw new InvalidProgramException($"Magic Code {magicCode.ToString("X08")} not recognized.");
 
-            var unk = reader.ReadInt32(); // ???
+            _unknown = reader.ReadInt32(); // ???
 
             int spriteSheetsCount = reader.ReadByte();
             SpriteSheets = new List<string>(spriteSheetsCount);
@@ -86,6 +88,9 @@ namespace RSDK5
 
         public void SaveChanges(BinaryWriter writer)
         {
+            writer.Write(MagicCode);
+            writer.Write(_unknown);
+
             var spriteSheetsCount = (byte)Math.Min(SpriteSheets.Count, byte.MaxValue);
             writer.Write(spriteSheetsCount);
             for (int i = 0; i < spriteSheetsCount; i++)
@@ -94,7 +99,15 @@ namespace RSDK5
                 writer.Write(StringEncoding.GetBytes(item));
             }
 
-            var animationsCount = (byte)Math.Min(Animations.Count, byte.MaxValue);
+            var collisionBoxesCount = (byte)Math.Min(CollisionBoxes.Count, byte.MaxValue);
+            writer.Write(collisionBoxesCount);
+            for (int i = 0; i < collisionBoxesCount; i++)
+            {
+                var item = CollisionBoxes[i];
+                writer.Write(StringEncoding.GetBytes(item));
+            }
+
+            var animationsCount = (ushort)Math.Min(Animations.Count, ushort.MaxValue);
             writer.Write(animationsCount);
             for (int i = 0; i < animationsCount; i++)
             {

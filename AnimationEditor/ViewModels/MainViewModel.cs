@@ -383,7 +383,7 @@ namespace AnimationEditor.ViewModels
         {
             SaveChanges();
 
-            if (fileName != null)
+            if (string.IsNullOrWhiteSpace(fileName))
                 fileName = FileName;
 
             using (var fStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))

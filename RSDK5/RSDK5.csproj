@@ -35,6 +35,7 @@
     <Compile Include="Animation.Frame.cs" />
     <Compile Include="Hitbox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringEncoding.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RSDK\RSDK.csproj">

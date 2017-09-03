@@ -88,16 +88,25 @@ namespace RSDK5
         public void SaveChanges(BinaryWriter writer)
         {
             writer.Write(StringEncoding.GetBytes(Name));
+            writer.Write((short)Frames.Count);
+            writer.Write((short)Speed);
+            writer.Write((byte)Loop);
+            writer.Write((byte)Flags);
             foreach (var entry in Frames)
             {
                 writer.Write((byte)entry.SpriteSheet);
-                writer.Write((byte)entry.CollisionBox);
-                writer.Write((byte)entry.X);
-                writer.Write((byte)entry.Y);
-                writer.Write((byte)entry.Width);
-                writer.Write((byte)entry.Height);
-                writer.Write((byte)entry.CenterX);
-                writer.Write((byte)entry.CenterY);
+                writer.Write((short)entry.Unk00);
+                writer.Write((short)entry.Unk01);
+                writer.Write((short)entry.X);
+                writer.Write((short)entry.Y);
+                writer.Write((short)entry.Width);
+                writer.Write((short)entry.Height);
+                writer.Write((short)entry.CenterX);
+                writer.Write((short)entry.CenterY);
+                foreach (var hb in entry.Hitboxes)
+                {
+                    hb.SaveChanges(writer);
+                }
             }
         }
 

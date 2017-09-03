@@ -27,19 +27,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RSDK
+namespace RSDK3
 {
     public static class StringEncoding
     {
         public static byte[] GetBytes(string str)
         {
             var bytes = Encoding.UTF8.GetBytes(str);
-            var bytesList = new List<byte>(bytes.Length + 2)
+            var bytesList = new List<byte>(bytes.Length + 1)
             {
-                (byte)(bytes.Length + 1)
+                (byte)bytes.Length
             };
             bytesList.AddRange(bytes);
-            bytesList.Add((byte)'\0');
             return bytesList.ToArray();
         }
 

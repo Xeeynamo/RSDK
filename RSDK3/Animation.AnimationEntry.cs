@@ -83,6 +83,10 @@ namespace RSDK3
         public void SaveChanges(BinaryWriter writer)
         {
             writer.Write(StringEncoding.GetBytes(Name));
+            writer.Write((byte)Frames.Count);
+            writer.Write((byte)Speed);
+            writer.Write((byte)Loop);
+            writer.Write((byte)Flags);
             foreach (var entry in Frames)
             {
                 writer.Write((byte)entry.SpriteSheet);
