@@ -179,7 +179,7 @@
                         <xc:NumericUpDown Grid.Column="0" Grid.Row="1" MinimumValue="0" MaximumValue="65535"
                                           Value="{Binding Speed, Mode=TwoWay}"/>
                         <TextBlock Grid.Column="2" Grid.Row="0" Text="Loop index"/>
-                        <xc:NumericUpDown Grid.Column="2" Grid.Row="1" MinimumValue="0" MaximumValue="65535"
+                        <xc:NumericUpDown Grid.Column="2" Grid.Row="1" MinimumValue="0" MaximumValue="255"
                                           Value="{Binding Loop, Mode=TwoWay}"/>
 
                         <TextBlock Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Text="Flags"/>
@@ -189,10 +189,10 @@
                             <TextBlock Text="Full engine rotation"/>
                             <TextBlock Text="Partial engine rotation"/>
                             <TextBlock Text="Static rotation using extra frames"/>
-                            <TextBlock Text="Unused"/>
-                            <TextBlock Text="Unused"/>
-                            <TextBlock Text="Unused"/>
-                            <TextBlock Text="Unused"/>
+                            <TextBlock Text="Unknown"/>
+                            <TextBlock Text="UNUSED?"/>
+                            <TextBlock Text="UNUSED?"/>
+                            <TextBlock Text="UNUSED?"/>
                         </ComboBox>
 
                     </Grid>

@@ -49,8 +49,8 @@ namespace RSDK5
 
             var framesCount = reader.ReadInt16();
             Speed = reader.ReadInt16();
-            Loop = reader.ReadInt16();
-            Flags = 0;
+            Loop = reader.ReadByte();
+            Flags = reader.ReadByte();
             for (int i = 0; i < framesCount; i++)
             {
                 var frame = new Frame(collisionBoxesCount)
