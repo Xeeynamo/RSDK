@@ -24,29 +24,100 @@ using RSDK;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace RSDK5
 {
-    public class Animation
+    public class Animation : IAnimation
     {
         const int MagicCode = 0x00525053;
 
         public List<string> SpriteSheets { get; }
-        
+
+        public List<string> UnknownList { get; }
+
+        public List<AnimationEntry> Animations { get; }
+
+        public List<HitboxEntry> Hitboxes { get; }
+
         public Animation(BinaryReader reader)
         {
-            int r;
-            if ((r = reader.ReadInt32()) != MagicCode)
-                throw new InvalidProgramException($"Magic Code {r.ToString("X08")} not recognized.");
+            int magicCode;
+            if ((magicCode = reader.ReadInt32()) != MagicCode)
+                throw new InvalidProgramException($"Magic Code {magicCode.ToString("X08")} not recognized.");
 
-            reader.ReadInt32(); // ???
+            var unk = reader.ReadInt32(); // ???
 
             int spriteSheetsCount = reader.ReadByte();
             SpriteSheets = new List<string>(spriteSheetsCount);
             while (spriteSheetsCount-- > 0)
                 SpriteSheets.Add(StringEncoding.GetString(reader));
 
+            int unknownListCount = reader.ReadByte();
+            UnknownList = new List<string>(unknownListCount);
+            while (unknownListCount-- > 0)
+                UnknownList.Add(StringEncoding.GetString(reader));
 
+            var animationsCount = reader.ReadInt16();
+            Animations = new List<AnimationEntry>(animationsCount);
+            while (animationsCount-- > 0)
+                Animations.Add(new AnimationEntry(reader));
+        }
+
+        public void Factory(out IAnimationEntry o) { o = new AnimationEntry(); }
+        public void Factory(out IFrame o) { o = new Frame(); }
+        public void Factory(out IHitboxEntry o) { o = new HitboxEntry(); }
+
+        public IEnumerable<IAnimationEntry> GetAnimations()
+        {
+            return Animations.Select(x => (IAnimationEntry)x);
+        }
+
+        public void SetAnimations(IEnumerable<IAnimationEntry> animations)
+        {
+            Animations.Clear();
+            Animations.AddRange(animations
+                .Select(x => x as AnimationEntry)
+                .Where(x => x != null));
+        }
+
+        public IEnumerable<IHitboxEntry> GetHitboxes()
+        {
+            return Hitboxes?.Select(x => (IHitboxEntry)x) ?? new HitboxEntry[0];
+        }
+
+        public void SetHitboxes(IEnumerable<IHitboxEntry> hitboxes)
+        {
+            Hitboxes.Clear();
+            Hitboxes.AddRange(hitboxes
+                .Select(x => x as HitboxEntry)
+                .Where(x => x != null));
+        }
+
+
+        public void SaveChanges(BinaryWriter writer)
+        {
+            var spriteSheetsCount = (byte)Math.Min(SpriteSheets.Count, byte.MaxValue);
+            writer.Write(spriteSheetsCount);
+            for (int i = 0; i < spriteSheetsCount; i++)
+            {
+                var item = SpriteSheets[i];
+                writer.Write(StringEncoding.GetBytes(item));
+            }
+
+            var animationsCount = (byte)Math.Min(Animations.Count, byte.MaxValue);
+            writer.Write(animationsCount);
+            for (int i = 0; i < animationsCount; i++)
+            {
+                Animations[i].SaveChanges(writer);
+            }
+
+            var collisionBoxesCount = (byte)Math.Min(Hitboxes.Count, byte.MaxValue);
+            writer.Write(collisionBoxesCount);
+            for (int i = 0; i < collisionBoxesCount; i++)
+            {
+                Hitboxes[i].SaveChanges(writer);
+            }
         }
     }
 }

@@ -351,7 +351,7 @@ namespace AnimationEditor.ViewModels
             if (File.Exists(fileName))
             {
                 var ext = Path.GetExtension(fileName);
-                using (var fStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete))
+                using (var fStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
                 {
                     using (var reader = new BinaryReader(fStream))
                     {
@@ -364,6 +364,7 @@ namespace AnimationEditor.ViewModels
                                 break;
                             case ".bin":
                                 _pathMod = "..";
+                                AnimationData = new RSDK5.Animation(reader);
                                 return false;
                             default:
                                 return false;

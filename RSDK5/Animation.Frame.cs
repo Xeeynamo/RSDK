@@ -20,41 +20,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RSDK;
 
-namespace RSDK
+namespace RSDK5
 {
-    public static class StringEncoding
+    public class Frame : IFrame
     {
-        public static byte[] GetBytes(string str)
-        {
-            var bytes = Encoding.UTF8.GetBytes(str);
-            var bytesList = new List<byte>(bytes.Length + 2)
-            {
-                (byte)(bytes.Length + 1)
-            };
-            bytesList.AddRange(bytes);
-            bytesList.Add((byte)'\0');
-            return bytesList.ToArray();
-        }
+        public int SpriteSheet { get; set; }
 
-        public static string GetString(BinaryReader reader)
-        {
-            int length = reader.ReadByte();
-            return GetString(reader.ReadBytes(length));
-        }
+        public int CollisionBox { get; set; }
 
-        public static string GetString(byte[] data)
-        {
-            int length = data.Length;
-            if (data[length - 1] == '\0')
-                length--;
-            return Encoding.UTF8.GetString(data, 0, length);
-        }
+        public int Unk00 { get; set; }
+
+        public int Unk01 { get; set; }
+
+        public int X { get; set; }
+
+        public int Y { get; set; }
+
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        public int CenterX { get; set; }
+
+        public int CenterY { get; set; }
+
+        public int HitboxLeft { get; set; }
+
+        public int HitboxTop { get; set; }
+
+        public int HitboxRight { get; set; }
+
+        public int HitboxBottom { get; set; }
+
+        public int Hitbox2Left { get; set; }
+
+        public int Hitbox2Top { get; set; }
+
+        public int Hitbox2Right { get; set; }
+
+        public int Hitbox2Bottom { get; set; }
     }
 }
