@@ -43,7 +43,7 @@ namespace RSDK5
         {
         }
 
-        public AnimationEntry(BinaryReader reader)
+        public AnimationEntry(BinaryReader reader, int collisionBoxesCount)
         {
             Name = StringEncoding.GetString(reader);
 
@@ -53,7 +53,7 @@ namespace RSDK5
             Flags = 0;
             for (int i = 0; i < framesCount; i++)
             {
-                Frames.Add(new Frame()
+                var frame = new Frame(collisionBoxesCount)
                 {
                     SpriteSheet = reader.ReadByte(),
                     CollisionBox = 0,
@@ -65,15 +65,10 @@ namespace RSDK5
                     Height = reader.ReadInt16(),
                     CenterX = reader.ReadInt16(),
                     CenterY = reader.ReadInt16(),
-                    HitboxLeft = reader.ReadInt16(),
-                    HitboxTop = reader.ReadInt16(),
-                    HitboxRight = reader.ReadInt16(),
-                    HitboxBottom = reader.ReadInt16(),
-                    Hitbox2Left = reader.ReadInt16(),
-                    Hitbox2Top = reader.ReadInt16(),
-                    Hitbox2Right = reader.ReadInt16(),
-                    Hitbox2Bottom = reader.ReadInt16(),
-                });
+                };
+                for (int j = 0; j < collisionBoxesCount; j++)
+                    frame.Hitboxes[j] = new Hitbox(reader);
+                Frames.Add(frame);
             }
         }
 

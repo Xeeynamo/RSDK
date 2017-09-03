@@ -27,14 +27,14 @@ namespace RSDK3
 {
     public class HitboxEntry : IHitboxEntry
     {
-        public Hitbox Floor { get; set; }
-        public Hitbox Ceiling { get; set; }
-        public Hitbox WallLeft { get; set; }
-        public Hitbox WallRight { get; set; }
-        public Hitbox Unk04 { get; set; }
-        public Hitbox Unk05 { get; set; }
-        public Hitbox Unk06 { get; set; }
-        public Hitbox Unk07 { get; set; }
+        public IHitbox Floor { get; set; }
+        public IHitbox Ceiling { get; set; }
+        public IHitbox WallLeft { get; set; }
+        public IHitbox WallRight { get; set; }
+        public IHitbox Unk04 { get; set; }
+        public IHitbox Unk05 { get; set; }
+        public IHitbox Unk06 { get; set; }
+        public IHitbox Unk07 { get; set; }
 
         public HitboxEntry()
         {

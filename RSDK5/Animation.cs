@@ -34,11 +34,9 @@ namespace RSDK5
 
         public List<string> SpriteSheets { get; }
 
-        public List<string> UnknownList { get; }
+        public List<string> CollisionBoxes { get; }
 
         public List<AnimationEntry> Animations { get; }
-
-        public List<HitboxEntry> Hitboxes { get; }
 
         public Animation(BinaryReader reader)
         {
@@ -53,20 +51,20 @@ namespace RSDK5
             while (spriteSheetsCount-- > 0)
                 SpriteSheets.Add(StringEncoding.GetString(reader));
 
-            int unknownListCount = reader.ReadByte();
-            UnknownList = new List<string>(unknownListCount);
-            while (unknownListCount-- > 0)
-                UnknownList.Add(StringEncoding.GetString(reader));
+            int collisionBoxesCount = reader.ReadByte();
+            CollisionBoxes = new List<string>(collisionBoxesCount);
+            while (collisionBoxesCount-- > 0)
+                CollisionBoxes.Add(StringEncoding.GetString(reader));
 
             var animationsCount = reader.ReadInt16();
             Animations = new List<AnimationEntry>(animationsCount);
             while (animationsCount-- > 0)
-                Animations.Add(new AnimationEntry(reader));
+                Animations.Add(new AnimationEntry(reader, CollisionBoxes.Count));
         }
 
         public void Factory(out IAnimationEntry o) { o = new AnimationEntry(); }
         public void Factory(out IFrame o) { o = new Frame(); }
-        public void Factory(out IHitboxEntry o) { o = new HitboxEntry(); }
+        public void Factory(out IHitboxEntry o) { o = null; }
 
         public IEnumerable<IAnimationEntry> GetAnimations()
         {
@@ -81,18 +79,9 @@ namespace RSDK5
                 .Where(x => x != null));
         }
 
-        public IEnumerable<IHitboxEntry> GetHitboxes()
-        {
-            return Hitboxes?.Select(x => (IHitboxEntry)x) ?? new HitboxEntry[0];
-        }
+        public IEnumerable<IHitboxEntry> GetHitboxes() { return null; }
 
-        public void SetHitboxes(IEnumerable<IHitboxEntry> hitboxes)
-        {
-            Hitboxes.Clear();
-            Hitboxes.AddRange(hitboxes
-                .Select(x => x as HitboxEntry)
-                .Where(x => x != null));
-        }
+        public void SetHitboxes(IEnumerable<IHitboxEntry> hitboxes) { }
 
 
         public void SaveChanges(BinaryWriter writer)
@@ -110,13 +99,6 @@ namespace RSDK5
             for (int i = 0; i < animationsCount; i++)
             {
                 Animations[i].SaveChanges(writer);
-            }
-
-            var collisionBoxesCount = (byte)Math.Min(Hitboxes.Count, byte.MaxValue);
-            writer.Write(collisionBoxesCount);
-            for (int i = 0; i < collisionBoxesCount; i++)
-            {
-                Hitboxes[i].SaveChanges(writer);
             }
         }
     }

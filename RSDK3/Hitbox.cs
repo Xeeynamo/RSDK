@@ -1,0 +1,34 @@
+﻿using RSDK;
+using System.IO;
+
+namespace RSDK3
+{
+    public class Hitbox : IHitbox
+    {
+        public int Left { get; set; }
+
+        public int Top { get; set; }
+
+        public int Right { get; set; }
+
+        public int Bottom { get; set; }
+
+        public Hitbox() { }
+
+        public Hitbox(BinaryReader reader)
+        {
+            Left = reader.ReadSByte();
+            Top = reader.ReadSByte();
+            Right = reader.ReadSByte();
+            Bottom = reader.ReadSByte();
+        }
+
+        public void SaveChanges(BinaryWriter writer)
+        {
+            writer.Write((sbyte)Left);
+            writer.Write((sbyte)Top);
+            writer.Write((sbyte)Right);
+            writer.Write((sbyte)Bottom);
+        }
+    }
+}

@@ -33,7 +33,7 @@
     <Compile Include="Animation.AnimationEntry.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Animation.Frame.cs" />
-    <Compile Include="Animation.HitboxEntry.cs" />
+    <Compile Include="Hitbox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -46,20 +46,11 @@ namespace RSDK5
 
         public int CenterY { get; set; }
 
-        public int HitboxLeft { get; set; }
-
-        public int HitboxTop { get; set; }
-
-        public int HitboxRight { get; set; }
-
-        public int HitboxBottom { get; set; }
-
-        public int Hitbox2Left { get; set; }
-
-        public int Hitbox2Top { get; set; }
-
-        public int Hitbox2Right { get; set; }
-
-        public int Hitbox2Bottom { get; set; }
+        public Hitbox[] Hitboxes { get; set; }
+        
+        public Frame(int hitboxesCount = 0)
+        {
+            Hitboxes = new Hitbox[hitboxesCount];
+        }
     }
 }

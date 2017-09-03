@@ -31,7 +31,7 @@ namespace AnimationEditor.ViewModels
 {
     public class HitboxViewModel
     {
-        public Hitbox Hitbox { get; set; }
+        public IHitbox Hitbox { get; set; }
 
         public override string ToString()
         {

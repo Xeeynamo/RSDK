@@ -225,27 +225,27 @@
 
                                 <TextBlock Grid.Column="0" Grid.Row="1" Text="Left"/>
                                 <xc:NumericUpDown Grid.Column="1" Grid.Row="1"
-                                    MinimumValue="0" MaximumValue="255"
+                                    MinimumValue="0" MaximumValue="32767"
                                     Value="{Binding SelectedFrameLeft, Mode=TwoWay}"/>
                                 <TextBlock Grid.Column="3" Grid.Row="1" Text="Top"/>
                                 <xc:NumericUpDown Grid.Column="4" Grid.Row="1"
-                                    MinimumValue="0" MaximumValue="255"
+                                    MinimumValue="0" MaximumValue="32767"
                                     Value="{Binding SelectedFrameTop, Mode=TwoWay}"/>
                                 <TextBlock Grid.Column="0" Grid.Row="3" Text="Width"/>
                                 <xc:NumericUpDown Grid.Column="1" Grid.Row="3"
-                                    MinimumValue="0" MaximumValue="255"
+                                    MinimumValue="0" MaximumValue="32767"
                                     Value="{Binding SelectedFrameWidth, Mode=TwoWay}"/>
                                 <TextBlock Grid.Column="3" Grid.Row="3" Text="Height"/>
                                 <xc:NumericUpDown Grid.Column="4" Grid.Row="3"
-                                    MinimumValue="0" MaximumValue="255"
+                                    MinimumValue="0" MaximumValue="32767"
                                     Value="{Binding SelectedFrameHeight, Mode=TwoWay}"/>
                                 <TextBlock Grid.Column="0" Grid.Row="5" Text="PivotX"/>
                                 <xc:NumericUpDown Grid.Column="1" Grid.Row="5"
-                                    MinimumValue="-128" MaximumValue="127"
+                                    MinimumValue="-32768" MaximumValue="32767"
                                     Value="{Binding SelectedFramePivotX, Mode=TwoWay}"/>
                                 <TextBlock Grid.Column="3" Grid.Row="5" Text="PivotY"/>
                                 <xc:NumericUpDown Grid.Column="4" Grid.Row="5"
-                                    MinimumValue="-128" MaximumValue="127"
+                                    MinimumValue="-32768" MaximumValue="32767"
                                     Value="{Binding SelectedFramePivotY, Mode=TwoWay}"/>
                             </Grid>
                         </StackPanel>

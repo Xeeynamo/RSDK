@@ -52,6 +52,8 @@ namespace RSDK
         public static string GetString(byte[] data)
         {
             int length = data.Length;
+            if (length == 0)
+                return string.Empty;
             if (data[length - 1] == '\0')
                 length--;
             return Encoding.UTF8.GetString(data, 0, length);

@@ -29,35 +29,6 @@ using System.Threading.Tasks;
 
 namespace RSDK
 {
-    public class Hitbox
-    {
-        public int Left { get; set; }
-
-        public int Top { get; set; }
-
-        public int Right { get; set; }
-
-        public int Bottom { get; set; }
-
-        public Hitbox() { }
-
-        public Hitbox(BinaryReader reader)
-        {
-            Left = reader.ReadSByte();
-            Top = reader.ReadSByte();
-            Right = reader.ReadSByte();
-            Bottom = reader.ReadSByte();
-        }
-
-        public void SaveChanges(BinaryWriter writer)
-        {
-            writer.Write((sbyte)Left);
-            writer.Write((sbyte)Top);
-            writer.Write((sbyte)Right);
-            writer.Write((sbyte)Bottom);
-        }
-    }
-
     public interface IFrame
     {
         int SpriteSheet { get; set; }
@@ -94,14 +65,14 @@ namespace RSDK
 
     public interface IHitboxEntry
     {
-        Hitbox Floor { get; set; }
-        Hitbox Ceiling { get; set; }
-        Hitbox WallLeft { get; set; }
-        Hitbox WallRight { get; set; }
-        Hitbox Unk04 { get; set; }
-        Hitbox Unk05 { get; set; }
-        Hitbox Unk06 { get; set; }
-        Hitbox Unk07 { get; set; }
+        IHitbox Floor { get; set; }
+        IHitbox Ceiling { get; set; }
+        IHitbox WallLeft { get; set; }
+        IHitbox WallRight { get; set; }
+        IHitbox Unk04 { get; set; }
+        IHitbox Unk05 { get; set; }
+        IHitbox Unk06 { get; set; }
+        IHitbox Unk07 { get; set; }
     }
 
     public interface IAnimation

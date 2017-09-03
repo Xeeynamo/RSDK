@@ -53,7 +53,7 @@ namespace AnimationEditor.ViewModels
 
                 Textures = new ObservableCollection<string>(_animationData.SpriteSheets);
                 Animations = new ObservableCollection<IAnimationEntry>(_animationData.GetAnimations());
-                Hitboxes = _animationData.GetHitboxes().Select(x => new HitboxViewModel() { Hitbox = x.Floor }).ToList() ?? new List<HitboxViewModel>();
+                Hitboxes = _animationData.GetHitboxes()?.Select(x => new HitboxViewModel() { Hitbox = x.Floor }).ToList() ?? new List<HitboxViewModel>();
                 _animService = new AnimationService(_animationData);
                 _animService.OnFrameChanged += OnFrameChanged;
                 _spriteService = new SpriteService(_animationData, basePath);
