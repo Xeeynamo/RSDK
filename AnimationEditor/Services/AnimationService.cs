@@ -36,8 +36,6 @@ namespace AnimationEditor.Services
 {
     public class AnimationService
     {
-        private static readonly int TIMESTEP = 224;
-
         private string _animationName;
         private int _frameIndex;
         private IAnimationEntry _currentAnimation;
@@ -199,7 +197,7 @@ namespace AnimationEditor.Services
                     }
                     else if (curAnim.Loop < framesCount)
                     {
-                        FrameIndex = index - (framesCount - loop) % loop;
+                        FrameIndex = loop + ((index - loop) % (framesCount - loop));
                     }
                 }
                 else

@@ -16,7 +16,7 @@
                 <MenuItem x:Name="MenuFileExit" Header="E_xit" Click="MenuFileExit_Click"/>
             </MenuItem>
         </Menu>
-        <Grid Margin="5">
+        <Grid Margin="5" IsEnabled="{Binding IsAnimationDataLoaded}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="5"/>
@@ -175,12 +175,11 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Column="0" Grid.Row="0" Text="FPS"/>
-                        <xc:NumericUpDown Grid.Column="0" Grid.Row="1" MinimumValue="0" MaximumValue="240"
-                                          Value="{Binding FramePerSec, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Speed"/>
+                        <xc:NumericUpDown Grid.Column="0" Grid.Row="1" MinimumValue="0" MaximumValue="65535"
+                                          Value="{Binding Speed, Mode=TwoWay}"/>
                         <TextBlock Grid.Column="2" Grid.Row="0" Text="Loop index"/>
-                        <xc:NumericUpDown Grid.Column="2" Grid.Row="1"
-                                          MinimumValue="0" MaximumValue="{Binding FramesCount}"
+                        <xc:NumericUpDown Grid.Column="2" Grid.Row="1" MinimumValue="0" MaximumValue="65535"
                                           Value="{Binding Loop, Mode=TwoWay}"/>
 
                         <TextBlock Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Text="Flags"/>

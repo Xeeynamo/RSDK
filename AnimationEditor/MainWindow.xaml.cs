@@ -100,15 +100,18 @@ namespace AnimationEditor
                 Description = "Please select the name of the animation"
             };
 
-            if (string.IsNullOrWhiteSpace(dialog.Name))
+            if (dialog.ShowDialog() == true)
             {
-                MessageBox.Show("You have specified an empty file name.",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (!ViewModel.ChangeCurrentAnimationName(dialog.Name))
-            {
-                MessageBox.Show("An animation with the name {dialog.Name} already exists.\nPlease specify another name.",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (string.IsNullOrWhiteSpace(dialog.Text))
+                {
+                    MessageBox.Show("You have specified an empty file name.",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (!ViewModel.ChangeCurrentAnimationName(dialog.Text))
+                {
+                    MessageBox.Show("An animation with the name {dialog.Name} already exists.\nPlease specify another name.",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

@@ -58,11 +58,14 @@ namespace AnimationEditor.ViewModels
                 _animService.OnFrameChanged += OnFrameChanged;
                 _spriteService = new SpriteService(_animationData, basePath);
 
+                OnPropertyChanged(nameof(IsAnimationDataLoaded));
                 OnPropertyChanged(nameof(Textures));
                 OnPropertyChanged(nameof(Animations));
                 OnPropertyChanged(nameof(Hitboxes));
             }
         }
+
+        public bool IsAnimationDataLoaded => AnimationData != null;
 
         #endregion
 
@@ -169,7 +172,7 @@ namespace AnimationEditor.ViewModels
 
                 OnPropertyChanged(nameof(IsAnimationSelected));
                 OnPropertyChanged(nameof(FramesCount));
-                OnPropertyChanged(nameof(FramePerSec));
+                OnPropertyChanged(nameof(Speed));
                 OnPropertyChanged(nameof(Loop));
                 OnPropertyChanged(nameof(Flags));
             }
@@ -181,10 +184,10 @@ namespace AnimationEditor.ViewModels
 
         public int FramesCount => SelectedAnimation?.GetFrames().Count() ?? 0;
 
-        public int FramePerSec
+        public int Speed
         {
-            get => SelectedAnimation != null ? SelectedAnimation.Speed / 4 : 0;
-            set => SelectedAnimation.Speed = value * 4;
+            get => SelectedAnimation != null ? SelectedAnimation.Speed : 0;
+            set => SelectedAnimation.Speed = value;
         }
 
         public int Loop
