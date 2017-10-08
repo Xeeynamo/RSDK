@@ -29,6 +29,17 @@ using System.Threading.Tasks;
 
 namespace RSDK
 {
+    /// <summary>
+    /// Used from RSDKv3
+    /// </summary>
+    public enum HitboxEntryType
+    {
+        InnerFloor, OuterFloor,
+        InnerCeiling, OuterCeiling,
+        InnerWallLeft, OuterWallLeft,
+        InnerWallRight, OuterWallRight,
+    }
+
     public interface IFrame
     {
         int SpriteSheet { get; set; }
@@ -65,18 +76,13 @@ namespace RSDK
 
     public interface IHitboxEntry
     {
-        IHitbox Floor { get; set; }
-        IHitbox Ceiling { get; set; }
-        IHitbox WallLeft { get; set; }
-        IHitbox WallRight { get; set; }
-        IHitbox Unk04 { get; set; }
-        IHitbox Unk05 { get; set; }
-        IHitbox Unk06 { get; set; }
-        IHitbox Unk07 { get; set; }
+        int Count { get; }
+        IHitbox GetHitbox(int index);
     }
 
     public interface IAnimation
     {
+        IEnumerable<string> HitboxTypes { get; }
         List<string> SpriteSheets { get; }
 
         // T Factory<T>();

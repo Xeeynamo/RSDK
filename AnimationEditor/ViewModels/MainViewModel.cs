@@ -53,7 +53,17 @@ namespace AnimationEditor.ViewModels
 
                 Textures = new ObservableCollection<string>(_animationData.SpriteSheets);
                 Animations = new ObservableCollection<IAnimationEntry>(_animationData.GetAnimations());
-                Hitboxes = _animationData.GetHitboxes()?.Select(x => new HitboxViewModel() { Hitbox = x.Floor }).ToList() ?? new List<HitboxViewModel>();
+                //Hitboxes = _animationData.GetHitboxes()?.Select(x => new HitboxViewModel() { Hitbox = x.InnerFloor }).ToList() ?? new List<HitboxViewModel>();
+                IsHitboxv3 = _animationData.HitboxTypes == null;
+                IsHitboxv5 = !IsHitboxv3;
+                if (IsHitboxv3)
+                {
+                    HitboxEntries = new ObservableCollection<IHitboxEntry>(_animationData.GetHitboxes());
+                    HitboxItems = HitboxEntries != null ? new ObservableCollection<string>(
+                        HitboxEntries.Select(x => GetHitboxEntryString(x)))
+                        : new ObservableCollection<string>();
+                }
+
                 _animService = new AnimationService(_animationData);
                 _animService.OnFrameChanged += OnFrameChanged;
                 _spriteService = new SpriteService(_animationData, basePath);
@@ -62,6 +72,8 @@ namespace AnimationEditor.ViewModels
                 OnPropertyChanged(nameof(Textures));
                 OnPropertyChanged(nameof(Animations));
                 OnPropertyChanged(nameof(Hitboxes));
+                OnPropertyChanged(nameof(HitboxEntries));
+                OnPropertyChanged(nameof(HitboxItems));
             }
         }
 
@@ -181,7 +193,7 @@ namespace AnimationEditor.ViewModels
 
         public int SelectedAnimationIndex { get; set; }
 
-        public bool IsFrameSelected => SelectedFrame != null;
+        public bool IsFrameSelected => SelectedFrame != null && SelectedAnimation.GetFrames().Count() > 0;
 
         public int FramesCount => SelectedAnimation?.GetFrames().Count() ?? 0;
 
@@ -205,7 +217,7 @@ namespace AnimationEditor.ViewModels
 
         #endregion
 
-        #region selected frame
+        #region Selected frame
         
         public bool IsAnimationSelected => SelectedAnimation != null;
 
@@ -217,6 +229,7 @@ namespace AnimationEditor.ViewModels
                 if (value >= 0)
                 {
                     _animService.FrameIndex = value;
+                    OnPropertyChanged(nameof(SelectedFrameIndex));
                 }
             }
         }
@@ -316,7 +329,23 @@ namespace AnimationEditor.ViewModels
 
         #endregion
 
-        #region methods
+        #region Hitbox
+
+        #region Hitbox v3
+        public bool IsHitboxv3 { get; private set; }
+        public bool IsNotHitboxv3 => !IsHitboxv3;
+        public ObservableCollection<IHitboxEntry> HitboxEntries { get; private set; }
+        public ObservableCollection<string> HitboxItems { get; private set; }
+        #endregion
+
+        #region Hitbox v5
+        public bool IsHitboxv5 { get; private set; }
+        public bool IsNotHitboxv5 => !IsHitboxv5;
+        #endregion
+
+        #endregion
+
+        #region Methods
 
         private void InvalidateCanvas()
         {
@@ -420,8 +449,13 @@ namespace AnimationEditor.ViewModels
             {
                 AnimationFrames.RemoveAt(SelectedFrameIndex);
                 var frames = SelectedAnimation.GetFrames().ToList();
-                frames.RemoveAt(SelectedFrameIndex);
-                SelectedAnimation.SetFrames(frames);
+                if (frames.Count > 0)
+                {
+                    frames.RemoveAt(SelectedFrameIndex);
+                    SelectedAnimation.SetFrames(frames);
+                    SelectedFrameIndex = frames.Count - 1;
+                    OnPropertyChanged(nameof(IsFrameSelected));
+                }
             }
         }
 
@@ -450,6 +484,15 @@ namespace AnimationEditor.ViewModels
             OnPropertyChanged(nameof(AnimationFrames));
         }
 
+        internal static string GetHitboxEntryString(IHitboxEntry entry)
+        {
+            return entry.Count >= 0 ? GetHitboxString(entry.GetHitbox(0)) : "???";
+        }
+        internal static string GetHitboxString(IHitbox hb)
+        {
+            return $"({hb.Left}, {hb.Top}, {hb.Right}, {hb.Bottom})";
+        }
+
         public bool ChangeCurrentAnimationName(string name)
         {
             if (Animations.Any(x => x.Name == name))
@@ -468,6 +511,10 @@ namespace AnimationEditor.ViewModels
         public void SaveChanges()
         {
             _animationData.SetAnimations(Animations);
+            if (IsHitboxv3)
+            {
+                _animationData.SetHitboxes(HitboxEntries);
+            }
         }
         #endregion
     }

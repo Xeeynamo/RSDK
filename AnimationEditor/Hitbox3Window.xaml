@@ -1,0 +1,90 @@
+﻿<Window x:Class="AnimationEditor.Hitbox3Window"
+        xmlns:xc="clr-namespace:Xe.Tools.Wpf.Controls;assembly=Xe.Tools.Wpf"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AnimationEditor"
+        mc:Ignorable="d"
+        Title="Hitbox RSDKv3 manager" Height="300" Width="400">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="ButtonAdd" Grid.Column="0" Margin="0 5 5 0" Click="ButtonAdd_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Add_16x}" Width="16"/>
+                        <TextBlock Text="Add" Margin="3 0 3 0"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="ButtonRemove" Grid.Column="1" Margin="0 5 0 0" Click="ButtonRemove_Click"
+                            IsEnabled="{Binding CanHitboxBeingRemoved}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                        <TextBlock Text="Remove" Margin="3 0 3 0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <ListBox x:Name="List" Grid.Column="0" ItemsSource="{Binding HitboxItems}"
+                         SelectedIndex="{Binding SelectedHitboxEntryIndex, Mode=TwoWay}"/>
+        </DockPanel>
+        <DockPanel Grid.Column="2" IsEnabled="{Binding IsHitboxEntrySelected}">
+            <TextBlock DockPanel.Dock="Top" Text="Collision type"/>
+            <ComboBox DockPanel.Dock="Top" Margin="0 0 0 5" SelectedIndex="{Binding SelectedHitboxIndex, Mode=TwoWay}">
+                <TextBlock Text="Floor (outer box)"/>
+                <TextBlock Text="Floor (inner box)"/>
+                <TextBlock Text="Ceiling (outer box)"/>
+                <TextBlock Text="Ceiling (inner box)"/>
+                <TextBlock Text="Wall left (outer box)"/>
+                <TextBlock Text="Wall left (inner box)"/>
+                <TextBlock Text="Wall right (outer box)"/>
+                <TextBlock Text="Wall right (inner box)"/>
+            </ComboBox>
+            <GroupBox DockPanel.Dock="Top" Header="Hitbox" Margin="0 0 0 5"
+                      IsEnabled="{Binding IsHitboxSelected}">
+                <Grid Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Left"/>
+                    <xc:NumericUpDown Grid.Column="1" Grid.Row="1"
+                                    MinimumValue="-128" MaximumValue="127"
+                                    Value="{Binding SelectedHitboxValue.Left, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="3" Grid.Row="1" Text="Top"/>
+                    <xc:NumericUpDown Grid.Column="4" Grid.Row="1"
+                                    MinimumValue="-128" MaximumValue="127"
+                                    Value="{Binding SelectedHitboxValue.Top, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Width"/>
+                    <xc:NumericUpDown Grid.Column="1" Grid.Row="3"
+                                    MinimumValue="-128" MaximumValue="127"
+                                    Value="{Binding SelectedHitboxValue.Right, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="3" Grid.Row="3" Text="Height"/>
+                    <xc:NumericUpDown Grid.Column="4" Grid.Row="3"
+                                    MinimumValue="-128" MaximumValue="127"
+                                    Value="{Binding SelectedHitboxValue.Bottom, Mode=TwoWay}"/>
+                </Grid>
+            </GroupBox>
+            <TextBlock DockPanel.Dock="Top" Text="Hitbox used by the following animations:"/>
+            <ListBox ItemsSource="{Binding AnimationsUsed}"/>
+        </DockPanel>
+    </Grid>
+</Window>

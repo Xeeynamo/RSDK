@@ -15,6 +15,10 @@
                 <MenuItem x:Name="MenuFileSaveAs" Header="Save _as" Click="MenuFileSaveAs_Click"/>
                 <MenuItem x:Name="MenuFileExit" Header="E_xit" Click="MenuFileExit_Click"/>
             </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem x:Name="MenuViewHitbox" Header="_Hitbox manager" Click="MenuViewHitbox_Click"/>
+                <MenuItem x:Name="MenuViewTexture" Header="_Texture manager" Click="MenuViewTexture_Click" Visibility="Collapsed"/>
+            </MenuItem>
         </Menu>
         <Grid Margin="5" IsEnabled="{Binding IsAnimationDataLoaded}">
             <Grid.ColumnDefinitions>
@@ -196,13 +200,21 @@
                         </ComboBox>
 
                     </Grid>
-                    <GroupBox Header="Current frame" IsEnabled="{Binding IsNotRunning}">
+                    <GroupBox IsEnabled="{Binding IsNotRunning}">
+                        <GroupBox.Header>
+                            <TextBlock>
+                                <Run Text="Current frame "/>
+                                <Run Text="{Binding SelectedFrameIndex, Mode=OneWay}"/>
+                                <Run Text="- Total "/>
+                                <Run Text="{Binding FramesCount, Mode=OneWay}"/>
+                            </TextBlock>
+                        </GroupBox.Header>
                         <StackPanel>
                             <TextBlock Margin="0 5 0 0" Text="Texture"/>
                             <ComboBox ItemsSource="{Binding Textures}"
                               SelectedIndex="{Binding SelectedFrameTexture, Mode=TwoWay}"/>
                             <TextBlock Margin="0 5 0 0" Text="Hitbox"/>
-                            <ComboBox ItemsSource="{Binding Hitboxes}"
+                            <ComboBox ItemsSource="{Binding HitboxItems}"
                               SelectedIndex="{Binding SelectedFrameHitbox, Mode=TwoWay}"/>
 
                             <Grid Margin="3">

@@ -40,6 +40,8 @@ namespace RSDK5
 
         public List<AnimationEntry> Animations { get; }
 
+        public IEnumerable<string> HitboxTypes => CollisionBoxes;
+
         public Animation(BinaryReader reader)
         {
             int magicCode;
@@ -65,7 +67,7 @@ namespace RSDK5
         }
 
         public void Factory(out IAnimationEntry o) { o = new AnimationEntry(); }
-        public void Factory(out IFrame o) { o = new Frame(); }
+        public void Factory(out IFrame o) { o = new Frame(CollisionBoxes.Count); }
         public void Factory(out IHitboxEntry o) { o = null; }
 
         public IEnumerable<IAnimationEntry> GetAnimations()

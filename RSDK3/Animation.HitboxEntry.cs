@@ -27,49 +27,33 @@ namespace RSDK3
 {
     public class HitboxEntry : IHitboxEntry
     {
-        public IHitbox Floor { get; set; }
-        public IHitbox Ceiling { get; set; }
-        public IHitbox WallLeft { get; set; }
-        public IHitbox WallRight { get; set; }
-        public IHitbox Unk04 { get; set; }
-        public IHitbox Unk05 { get; set; }
-        public IHitbox Unk06 { get; set; }
-        public IHitbox Unk07 { get; set; }
+        public Hitbox[] Hitboxes { get; set; }
+
+        public int Count => Hitboxes.Length;
 
         public HitboxEntry()
         {
-            Floor = new Hitbox();
-            Ceiling = new Hitbox();
-            WallLeft = new Hitbox();
-            WallRight = new Hitbox();
-            Unk04 = new Hitbox();
-            Unk05 = new Hitbox();
-            Unk06 = new Hitbox();
-            Unk07 = new Hitbox();
+            Hitboxes = new Hitbox[8];
+            for (int i = 0; i < Hitboxes.Length; i++)
+                Hitboxes[i] = new Hitbox();
         }
 
 		public HitboxEntry(BinaryReader reader)
         {
-            Floor = new Hitbox(reader);
-            Ceiling = new Hitbox(reader);
-            WallLeft = new Hitbox(reader);
-            WallRight = new Hitbox(reader);
-            Unk04 = new Hitbox(reader);
-            Unk05 = new Hitbox(reader);
-            Unk06 = new Hitbox(reader);
-            Unk07 = new Hitbox(reader);
+            Hitboxes = new Hitbox[8];
+            for (int i = 0; i < Hitboxes.Length; i++)
+                Hitboxes[i] = new Hitbox(reader);
         }
 
-		public void SaveChanges(BinaryWriter writer)
+        public IHitbox GetHitbox(int index)
         {
-            Floor.SaveChanges(writer);
-            Ceiling.SaveChanges(writer);
-            WallLeft.SaveChanges(writer);
-            WallRight.SaveChanges(writer);
-            Unk04.SaveChanges(writer);
-            Unk05.SaveChanges(writer);
-            Unk06.SaveChanges(writer);
-            Unk07.SaveChanges(writer);
+            return Hitboxes[index];
+        }
+
+        public void SaveChanges(BinaryWriter writer)
+        {
+            for (int i = 0; i < Hitboxes.Length; i++)
+                Hitboxes[i].SaveChanges(writer);
         }
     }
 }

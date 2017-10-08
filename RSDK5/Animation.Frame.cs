@@ -51,6 +51,10 @@ namespace RSDK5
         public Frame(int hitboxesCount = 0)
         {
             Hitboxes = new Hitbox[hitboxesCount];
+            for (int i = 0; i < hitboxesCount; i++)
+            {
+                Hitboxes[i] = new Hitbox();
+            }
         }
     }
 }

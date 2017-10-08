@@ -36,6 +36,8 @@ namespace RSDK3
 
         public List<HitboxEntry> Hitboxes { get; }
 
+        public IEnumerable<string> HitboxTypes => null;
+
         public Animation(BinaryReader reader)
         {
             int spriteSheetsCount = reader.ReadByte();

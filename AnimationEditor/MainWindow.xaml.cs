@@ -114,5 +114,15 @@ namespace AnimationEditor
                 }
             }
         }
+
+        private void MenuViewTexture_Click(object sender, RoutedEventArgs e)
+        {
+            new TextureWindow(ViewModel).Show();
+        }
+
+        private void MenuViewHitbox_Click(object sender, RoutedEventArgs e)
+        {
+            new Hitbox3Window(ViewModel).Show();
+        }
     }
 }

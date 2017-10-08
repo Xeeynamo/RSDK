@@ -1,0 +1,64 @@
+﻿<Window x:Class="AnimationEditor.TextureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AnimationEditor"
+        mc:Ignorable="d"
+        Title="Texture manager" Height="405" Width="292">
+    <DockPanel Margin="10">
+        <TextBlock DockPanel.Dock="Top" Text="List of texture files" Margin="5 0 0 5"/>
+        <DockPanel DockPanel.Dock="Top" Margin="0 0 0 5">
+            <Button x:Name="ButtonRemove" DockPanel.Dock="Right" Click="ButtonRemove_Click"
+                    IsEnabled="{Binding IsValueSelected}">
+                <Image Width="16" Source="{StaticResource Remove_color_16x}"/>
+                <Button.ToolTip>
+                    <StackPanel>
+                        <Label>Remove the selected item</Label>
+                    </StackPanel>
+                </Button.ToolTip>
+            </Button>
+            <Button DockPanel.Dock="Right" Click="ButtonAdd_Click">
+                <Image Width="16" Source="{StaticResource Add_16x}"/>
+                <Button.ToolTip>
+                    <StackPanel>
+                        <Label>Add a new texture.</Label>
+                    </StackPanel>
+                </Button.ToolTip>
+            </Button>
+            <Button x:Name="ButtonChange" DockPanel.Dock="Right" Click="ButtonChange_Click"
+                    IsEnabled="{Binding IsValueSelected}">
+                <Image Width="16" Source="{StaticResource OpenFileDialog_16x}"/>
+                <Button.ToolTip>
+                    <StackPanel>
+                        <Label>Change current texture with a new one.</Label>
+                    </StackPanel>
+                </Button.ToolTip>
+            </Button>
+            <Button x:Name="ButtonFramesExport" DockPanel.Dock="Right" Click="ButtonFramesExport_Click"
+                    IsEnabled="{Binding IsValueSelected}">
+                <Image Width="16" Source="{StaticResource AddRowToAbove_16x}"/>
+                <Button.ToolTip>
+                    <StackPanel>
+                        <Label>Export all frames from selected texture.</Label>
+                    </StackPanel>
+                </Button.ToolTip>
+            </Button>
+            <Button x:Name="ButtonFramesImport" DockPanel.Dock="Right" Click="ButtonFramesImport_Click"
+                    IsEnabled="{Binding IsValueSelected}">
+                <Image Width="16" Source="{StaticResource AddRowToBelow_16x}"/>
+                <Button.ToolTip>
+                    <StackPanel>
+                        <Label>Import the specified frames into the current texture, packing them and changing existing frames properties.</Label>
+                    </StackPanel>
+                </Button.ToolTip>
+            </Button>
+            <ComboBox x:Name="ListTextures" ItemsSource="{Binding Textures}"
+                      SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                      SelectedValue="{Binding SelectedValue, Mode=TwoWay}"/>
+        </DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding CurrentTexture.StrSize, StringFormat='Size: {0}'}" Margin="5 0 5 5"/>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding CurrentTexture.StrFormat, StringFormat='Format: {0}'}" Margin="5 0 5 5"/>
+        <Image x:Name="ImageTexture" Source="{Binding CurrentTexture.Image}"/>
+    </DockPanel>
+</Window>
