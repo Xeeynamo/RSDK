@@ -108,6 +108,7 @@ namespace AnimationEditor.ViewModels
             {
                 _zoom = Math.Max(Math.Min(value, 16), 0.25);
                 OnPropertyChanged();
+                InvalidateCanvas();
             }
         }
 
@@ -124,7 +125,7 @@ namespace AnimationEditor.ViewModels
                 var frame = _animService?.CurrentFrame;
                 if (frame != null)
                 {
-                    return new Point((double)frame.CenterX / frame.Width, (double)frame.CenterY / frame.Height);
+                    return new Point((double)-frame.CenterX / frame.Width, (double)-frame.CenterY / frame.Height);
                 }
                 return new Point(0.5, 0.5);
             }
