@@ -127,5 +127,10 @@ namespace AnimationEditor
             else if (ViewModel.IsHitboxV5)
                 new Hitbox5Window(ViewModel).Show();
         }
+
+        private void MenuInfoAbout_Click(object sender, RoutedEventArgs e)
+        {
+            new AboutWindow().Show();
+        }
     }
 }

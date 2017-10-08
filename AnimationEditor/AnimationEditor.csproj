@@ -57,6 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Hitbox3Window.xaml.cs">
       <DependentUpon>Hitbox3Window.xaml</DependentUpon>
     </Compile>
@@ -74,6 +77,10 @@
     <Compile Include="ViewModels\HitboxV5EditorViewModel.cs" />
     <Compile Include="ViewModels\TextureViewModel.cs" />
     <Compile Include="ViewModels\TextureWindowViewModel.cs" />
+    <Page Include="AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Hitbox3Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

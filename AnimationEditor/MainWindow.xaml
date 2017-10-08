@@ -19,6 +19,9 @@
                 <MenuItem x:Name="MenuViewHitbox" Header="_Hitbox manager" Click="MenuViewHitbox_Click"/>
                 <MenuItem x:Name="MenuViewTexture" Header="_Texture manager" Click="MenuViewTexture_Click" Visibility="Collapsed"/>
             </MenuItem>
+            <MenuItem Header="_Info">
+                <MenuItem x:Name="MenuInfoAbout" Header="_About" Click="MenuInfoAbout_Click"/>
+            </MenuItem>
         </Menu>
         <Grid Margin="5" IsEnabled="{Binding IsAnimationDataLoaded}">
             <Grid.ColumnDefinitions>
