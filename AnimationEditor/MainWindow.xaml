@@ -214,9 +214,44 @@
                             <ComboBox ItemsSource="{Binding Textures}"
                               SelectedIndex="{Binding SelectedFrameTexture, Mode=TwoWay}"/>
                             <TextBlock Margin="0 5 0 0" Text="Hitbox"/>
-                            <ComboBox ItemsSource="{Binding HitboxItems}"
+                            <ComboBox ItemsSource="{Binding HitboxItems}" Visibility="{Binding HitboxV3Visibility}"
                               SelectedIndex="{Binding SelectedFrameHitbox, Mode=TwoWay}"/>
+                            <ComboBox ItemsSource="{Binding HitboxTypes}" Visibility="{Binding HitboxV5Visibility}"
+                              SelectedIndex="{Binding SelectedHitboxType, Mode=TwoWay}"/>
+                            <Grid Margin="3" Visibility="{Binding HitboxV5Visibility}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="20"/>
+                                </Grid.RowDefinitions>
 
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Left"/>
+                                <xc:NumericUpDown Grid.Column="1" Grid.Row="1"
+                                    MinimumValue="-32768" MaximumValue="32767"
+                                    Value="{Binding SelectedHitbox.Left, Mode=TwoWay}"/>
+                                <TextBlock Grid.Column="3" Grid.Row="1" Text="Top"/>
+                                <xc:NumericUpDown Grid.Column="4" Grid.Row="1"
+                                    MinimumValue="-32768" MaximumValue="32767"
+                                    Value="{Binding SelectedHitbox.Top, Mode=TwoWay}"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Right"/>
+                                <xc:NumericUpDown Grid.Column="1" Grid.Row="3"
+                                    MinimumValue="-32768" MaximumValue="32767"
+                                    Value="{Binding SelectedHitbox.Right, Mode=TwoWay}"/>
+                                <TextBlock Grid.Column="3" Grid.Row="3" Text="Bottom"/>
+                                <xc:NumericUpDown Grid.Column="4" Grid.Row="3"
+                                    MinimumValue="-32768" MaximumValue="32767"
+                                    Value="{Binding SelectedHitbox.Bottom, Mode=TwoWay}"/>
+                            </Grid>
+
+                            <TextBlock Margin="0 5 0 0" Text="Sprite property"/>
                             <Grid Margin="3">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="40"/>

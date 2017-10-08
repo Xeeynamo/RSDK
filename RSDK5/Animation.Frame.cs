@@ -56,5 +56,9 @@ namespace RSDK5
                 Hitboxes[i] = new Hitbox();
             }
         }
+        public IHitbox GetHitbox(int index)
+        {
+            return Hitboxes[index];
+        }
     }
 }

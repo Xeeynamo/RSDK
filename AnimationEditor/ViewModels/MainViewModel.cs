@@ -14,6 +14,18 @@ namespace AnimationEditor.ViewModels
 {
     public class MainViewModel : Xe.Tools.Wpf.BaseNotifyPropertyChanged
     {
+        private class DummyHitbox : IHitbox
+        {
+            public int Left { get; set; }
+            public int Top { get; set; }
+            public int Right { get; set; }
+            public int Bottom { get; set; }
+
+            public void SaveChanges(BinaryWriter writer)
+            {
+            }
+        }
+
         private string _pathMod;
         private string _fileName;
         private IAnimation _animationData;
@@ -40,8 +52,6 @@ namespace AnimationEditor.ViewModels
 
         public ObservableCollection<IAnimationEntry> Animations { get; private set; }
 
-        public List<HitboxViewModel> Hitboxes { get; private set; }
-
         public IAnimation AnimationData
         {
             get => _animationData;
@@ -53,16 +63,20 @@ namespace AnimationEditor.ViewModels
 
                 Textures = new ObservableCollection<string>(_animationData.SpriteSheets);
                 Animations = new ObservableCollection<IAnimationEntry>(_animationData.GetAnimations());
-                //Hitboxes = _animationData.GetHitboxes()?.Select(x => new HitboxViewModel() { Hitbox = x.InnerFloor }).ToList() ?? new List<HitboxViewModel>();
-                IsHitboxv3 = _animationData.HitboxTypes == null;
-                IsHitboxv5 = !IsHitboxv3;
-                if (IsHitboxv3)
+                IsHitboxV3 = _animationData.HitboxTypes == null;
+                IsHitboxV5 = !IsHitboxV3;
+                if (IsHitboxV3)
                 {
                     HitboxEntries = new ObservableCollection<IHitboxEntry>(_animationData.GetHitboxes());
                     HitboxItems = HitboxEntries != null ? new ObservableCollection<string>(
                         HitboxEntries.Select(x => GetHitboxEntryString(x)))
                         : new ObservableCollection<string>();
                 }
+                else if (IsHitboxV5)
+                {
+                    HitboxTypes = new ObservableCollection<string>(_animationData.HitboxTypes);
+                }
+                ValidateHitboxVisibility();
 
                 _animService = new AnimationService(_animationData);
                 _animService.OnFrameChanged += OnFrameChanged;
@@ -71,7 +85,6 @@ namespace AnimationEditor.ViewModels
                 OnPropertyChanged(nameof(IsAnimationDataLoaded));
                 OnPropertyChanged(nameof(Textures));
                 OnPropertyChanged(nameof(Animations));
-                OnPropertyChanged(nameof(Hitboxes));
                 OnPropertyChanged(nameof(HitboxEntries));
                 OnPropertyChanged(nameof(HitboxItems));
             }
@@ -332,16 +345,61 @@ namespace AnimationEditor.ViewModels
         #region Hitbox
 
         #region Hitbox v3
-        public bool IsHitboxv3 { get; private set; }
-        public bool IsNotHitboxv3 => !IsHitboxv3;
+        private bool _isHitboxV3;
+        public bool IsHitboxV3
+        {
+            get => _isHitboxV3;
+            set
+            {
+                _isHitboxV3 = value;
+                ValidateHitboxVisibility();
+            }
+        }
+        public bool IsNotHitboxV3 => !IsHitboxV3;
+        public Visibility HitboxV3Visibility => IsHitboxV3 ? Visibility.Visible : Visibility.Collapsed;
         public ObservableCollection<IHitboxEntry> HitboxEntries { get; private set; }
         public ObservableCollection<string> HitboxItems { get; private set; }
         #endregion
 
         #region Hitbox v5
-        public bool IsHitboxv5 { get; private set; }
-        public bool IsNotHitboxv5 => !IsHitboxv5;
+        private bool _isHitboxV5;
+        private int _selectedIndex;
+        public bool IsHitboxV5
+        {
+            get => _isHitboxV5;
+            set
+            {
+                _isHitboxV5 = value;
+                ValidateHitboxVisibility();
+            }
+        }
+        public bool IsNotHitboxV5 => !IsHitboxV5;
+        public Visibility HitboxV5Visibility => IsHitboxV5 ? Visibility.Visible : Visibility.Collapsed;
+        public ObservableCollection<string> HitboxTypes { get; set; }
+        public int SelectedHitboxType
+        {
+            get => _selectedIndex;
+            set
+            {
+                _selectedIndex = value;
+                OnPropertyChanged(nameof(SelectedHitbox));
+            }
+        }
+        public IHitbox SelectedHitbox => SelectedFrame?.GetHitbox(SelectedHitboxType) ?? new DummyHitbox();
         #endregion
+
+        private void ValidateHitboxVisibility()
+        {
+            OnPropertyChanged(nameof(IsHitboxV3));
+            OnPropertyChanged(nameof(IsNotHitboxV3));
+            OnPropertyChanged(nameof(HitboxV3Visibility));
+            OnPropertyChanged(nameof(HitboxEntries));
+            OnPropertyChanged(nameof(HitboxItems));
+
+            OnPropertyChanged(nameof(IsNotHitboxV5));
+            OnPropertyChanged(nameof(HitboxV5Visibility));
+            OnPropertyChanged(nameof(HitboxTypes));
+        }
 
         #endregion
 
@@ -371,6 +429,7 @@ namespace AnimationEditor.ViewModels
             OnPropertyChanged(nameof(SelectedFrameHeight));
             OnPropertyChanged(nameof(SelectedFramePivotX));
             OnPropertyChanged(nameof(SelectedFramePivotY));
+            OnPropertyChanged(nameof(SelectedHitbox));
         }
 
         private void OnFrameChanged(AnimationService service)
@@ -511,9 +570,13 @@ namespace AnimationEditor.ViewModels
         public void SaveChanges()
         {
             _animationData.SetAnimations(Animations);
-            if (IsHitboxv3)
+            if (IsHitboxV3)
             {
                 _animationData.SetHitboxes(HitboxEntries);
+            }
+            else if (IsHitboxV5)
+            {
+                _animationData.SetHitboxTypes(HitboxTypes);
             }
         }
         #endregion

@@ -57,6 +57,8 @@ namespace RSDK
         int CenterX { get; set; }
 
         int CenterY { get; set; }
+
+        IHitbox GetHitbox(int index);
     }
 
     public interface IAnimationEntry
@@ -97,6 +99,8 @@ namespace RSDK
         IEnumerable<IHitboxEntry> GetHitboxes();
 
         void SetHitboxes(IEnumerable<IHitboxEntry> hitboxes);
+
+        void SetHitboxTypes(IEnumerable<string> hitboxTypes);
 
         void SaveChanges(BinaryWriter writer);
     }

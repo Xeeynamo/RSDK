@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnimationEditor"
         mc:Ignorable="d"
-        Title="Hitbox RSDKv3 manager" Height="300" Width="400">
+        Title="Hitbox manager" Height="300" Width="400">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -73,11 +73,11 @@
                     <xc:NumericUpDown Grid.Column="4" Grid.Row="1"
                                     MinimumValue="-128" MaximumValue="127"
                                     Value="{Binding SelectedHitboxValue.Top, Mode=TwoWay}"/>
-                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Width"/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Right"/>
                     <xc:NumericUpDown Grid.Column="1" Grid.Row="3"
                                     MinimumValue="-128" MaximumValue="127"
                                     Value="{Binding SelectedHitboxValue.Right, Mode=TwoWay}"/>
-                    <TextBlock Grid.Column="3" Grid.Row="3" Text="Height"/>
+                    <TextBlock Grid.Column="3" Grid.Row="3" Text="Bottom"/>
                     <xc:NumericUpDown Grid.Column="4" Grid.Row="3"
                                     MinimumValue="-128" MaximumValue="127"
                                     Value="{Binding SelectedHitboxValue.Bottom, Mode=TwoWay}"/>

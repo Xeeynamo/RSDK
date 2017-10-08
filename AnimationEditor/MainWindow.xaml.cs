@@ -122,7 +122,10 @@ namespace AnimationEditor
 
         private void MenuViewHitbox_Click(object sender, RoutedEventArgs e)
         {
-            new Hitbox3Window(ViewModel).Show();
+            if (ViewModel.IsHitboxV3)
+                new Hitbox3Window(ViewModel).Show();
+            else if (ViewModel.IsHitboxV5)
+                new Hitbox5Window(ViewModel).Show();
         }
     }
 }

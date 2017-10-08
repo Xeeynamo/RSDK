@@ -85,6 +85,8 @@ namespace RSDK3
                 .Select(x => x as HitboxEntry)
                 .Where(x => x != null));
         }
+        public void SetHitboxTypes(IEnumerable<string> hitboxTypes)
+        { }
 
 
         public void SaveChanges(BinaryWriter writer)

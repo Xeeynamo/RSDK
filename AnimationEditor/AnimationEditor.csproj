@@ -60,6 +60,9 @@
     <Compile Include="Hitbox3Window.xaml.cs">
       <DependentUpon>Hitbox3Window.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Hitbox5Window.xaml.cs">
+      <DependentUpon>Hitbox5Window.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TextureWindow.xaml.cs">
       <DependentUpon>TextureWindow.xaml</DependentUpon>
     </Compile>
@@ -68,9 +71,14 @@
     <Compile Include="Services\ImageService.cs" />
     <Compile Include="Services\TextureService.cs" />
     <Compile Include="ViewModels\HitboxV3EditorViewModel.cs" />
+    <Compile Include="ViewModels\HitboxV5EditorViewModel.cs" />
     <Compile Include="ViewModels\TextureViewModel.cs" />
     <Compile Include="ViewModels\TextureWindowViewModel.cs" />
     <Page Include="Hitbox3Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Hitbox5Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

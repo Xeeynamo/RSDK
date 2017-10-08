@@ -41,5 +41,10 @@ namespace RSDK3
         public int CenterX { get; set; }
 
         public int CenterY { get; set; }
+
+        public IHitbox GetHitbox(int index)
+        {
+            return new Hitbox();
+        }
     }
 }

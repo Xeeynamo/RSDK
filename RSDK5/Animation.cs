@@ -86,6 +86,11 @@ namespace RSDK5
         public IEnumerable<IHitboxEntry> GetHitboxes() { return null; }
 
         public void SetHitboxes(IEnumerable<IHitboxEntry> hitboxes) { }
+        public void SetHitboxTypes(IEnumerable<string> hitboxTypes)
+        {
+            CollisionBoxes.Clear();
+            CollisionBoxes.AddRange(hitboxTypes);
+        }
 
 
         public void SaveChanges(BinaryWriter writer)
