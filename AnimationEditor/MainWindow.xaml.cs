@@ -1,5 +1,6 @@
 ﻿using AnimationEditor.ViewModels;
 using Microsoft.Win32;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using Xe.Tools.Wpf.Dialogs;
@@ -66,6 +67,11 @@ namespace AnimationEditor
             ViewModel.FrameAdd();
         }
 
+        private void ButtonFrameDupe_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.DupeFrame();
+        }
+
         private void ButtonFrameRemove_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.FrameRemove();
@@ -117,7 +123,9 @@ namespace AnimationEditor
 
         private void MenuViewTexture_Click(object sender, RoutedEventArgs e)
         {
-            new TextureWindow(ViewModel).Show();
+            if (ViewModel.IsAnimationDataLoaded)
+                new TextureWindow(ViewModel, new DirectoryInfo(Path.GetDirectoryName(ViewModel.FileName))
+                    .Parent.FullName).Show();
         }
 
         private void MenuViewHitbox_Click(object sender, RoutedEventArgs e)

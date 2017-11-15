@@ -46,6 +46,7 @@ namespace Xe.Tools.Wpf.Dialogs
             XeGameProject,
             XeAnimation,
             ImagePng,
+            ImageGif
         }
 
         private CommonFileDialog _fd;
@@ -137,6 +138,10 @@ namespace Xe.Tools.Wpf.Dialogs
                     case Type.ImagePng:
                         fd.Filters.Add(CreateFilter("PNG image files",
                             new string[] { "png" }));
+                        break;
+                    case Type.ImageGif:
+                        fd.Filters.Add(CreateFilter("GIF image files",
+                            new string[] { "gif" }));
                         break;
                     default:
                         break;

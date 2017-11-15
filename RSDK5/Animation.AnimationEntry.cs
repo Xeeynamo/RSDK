@@ -21,18 +21,20 @@
 // SOFTWARE.
 
 using RSDK;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace RSDK5
 {
     public class AnimationEntry : IAnimationEntry
     {
-        public string Name { get; set; }
-
         public List<Frame> Frames { get; } = new List<Frame>();
 
+        public string Name { get; set; }
+        
         public int Speed { get; set; }
 
         public int Loop { get; set; }
@@ -57,8 +59,8 @@ namespace RSDK5
                 {
                     SpriteSheet = reader.ReadByte(),
                     CollisionBox = 0,
-                    Unk00 = reader.ReadInt16(),
-                    Unk01 = reader.ReadInt16(),
+                    Duration = reader.ReadInt16(), // Make sure this is correct
+                    ID = reader.ReadUInt16(),
                     X = reader.ReadInt16(),
                     Y = reader.ReadInt16(),
                     Width = reader.ReadInt16(),
@@ -95,8 +97,8 @@ namespace RSDK5
             foreach (var entry in Frames)
             {
                 writer.Write((byte)entry.SpriteSheet);
-                writer.Write((short)entry.Unk00);
-                writer.Write((short)entry.Unk01);
+                writer.Write((short)entry.Duration); // Make sure this is correct
+                writer.Write((ushort)entry.ID);
                 writer.Write((short)entry.X);
                 writer.Write((short)entry.Y);
                 writer.Write((short)entry.Width);

@@ -17,7 +17,7 @@
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem x:Name="MenuViewHitbox" Header="_Hitbox manager" Click="MenuViewHitbox_Click"/>
-                <MenuItem x:Name="MenuViewTexture" Header="_Texture manager" Click="MenuViewTexture_Click" Visibility="Collapsed"/>
+                <MenuItem x:Name="MenuViewTexture" Header="_Texture manager" Click="MenuViewTexture_Click"/>
             </MenuItem>
             <MenuItem Header="_Info">
                 <MenuItem x:Name="MenuInfoAbout" Header="_About" Click="MenuInfoAbout_Click"/>
@@ -62,6 +62,10 @@
                        IsEnabled="{Binding IsAnimationSelected}">
                 <DockPanel DockPanel.Dock="Bottom">
                     <StackPanel DockPanel.Dock="Right" VerticalAlignment="Bottom">
+                        <Button x:Name="ButtonFrameDupe" Grid.Column="1" Margin="0 0 0 5" Click="ButtonFrameDupe_Click"
+                            IsEnabled="{Binding IsAnimationSelected}">
+                            <Image Source="{StaticResource Document_16x}" Width="16"/>
+                        </Button>
                         <Button x:Name="ButtonFrameAdd" Grid.Column="1" Margin="0 0 0 5" Click="ButtonFrameAdd_Click"
                             IsEnabled="{Binding IsAnimationSelected}">
                             <Image Source="{StaticResource Add_16x}" Width="16"/>
@@ -146,7 +150,8 @@
                 </StackPanel>
                 <Canvas Margin="0 0 0 5" SizeChanged="Canvas_SizeChanged"
                         RenderOptions.BitmapScalingMode="NearestNeighbor"
-                        ClipToBounds="True" MouseWheel="Canvas_MouseWheel">
+                        ClipToBounds="True" MouseWheel="Canvas_MouseWheel"
+                        Background="#303030">
                     <Image Source="{Binding Sprite}"
                            Canvas.Left="{Binding SpriteLeft, Mode=OneWay}"
                            Canvas.Top="{Binding SpriteTop, Mode=OneWay}"
@@ -257,13 +262,15 @@
                             <TextBlock Margin="0 5 0 0" Text="Sprite property"/>
                             <Grid Margin="3">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="35"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="5"/>
-                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="2"/>
+                                    <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="20"/>
                                     <RowDefinition Height="5"/>
                                     <RowDefinition Height="20"/>
                                     <RowDefinition Height="5"/>
@@ -296,6 +303,15 @@
                                 <xc:NumericUpDown Grid.Column="4" Grid.Row="5"
                                     MinimumValue="-32768" MaximumValue="32767"
                                     Value="{Binding SelectedFramePivotY, Mode=TwoWay}"/>
+                                <TextBlock Grid.Column="0" Grid.Row="7" Text="ID"/>
+                                <xc:NumericUpDown Grid.Column="1" Grid.Row="7"
+                                    MinimumValue="0" MaximumValue="65535"
+                                    Value="{Binding SelectedFrameID, Mode=TwoWay}"/>
+                                <TextBlock Grid.Column="3" Grid.Row="7" Text="Duration"/>
+                                <xc:NumericUpDown Grid.Column="4" Grid.Row="7"
+                                    MinimumValue="0" MaximumValue="65535"
+                                    Value="{Binding SelectedFrameDuration, Mode=TwoWay}"/>
+
                             </Grid>
                         </StackPanel>
                     </GroupBox>
