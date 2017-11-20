@@ -97,13 +97,8 @@ namespace RSDK5
         {
             writer.Write(MagicCode);
 
-            TotalFramesCount = 0;
             var animationsCount = (ushort)Math.Min(Animations.Count, ushort.MaxValue);
-            for (int i = 0; i < animationsCount; i++)
-            {
-                TotalFramesCount += Animations[i].Frames.Count;
-            }
-
+            TotalFramesCount = Animations.Take(animationsCount).Sum(x => x.Frames.Count);
             writer.Write(TotalFramesCount);
 
             var spriteSheetsCount = (byte)Math.Min(SpriteSheets.Count, byte.MaxValue);
@@ -122,7 +117,6 @@ namespace RSDK5
                 writer.Write(StringEncoding.GetBytes(item));
             }
 
-            animationsCount = (ushort)Math.Min(Animations.Count, ushort.MaxValue);
             writer.Write(animationsCount);
             for (int i = 0; i < animationsCount; i++)
             {

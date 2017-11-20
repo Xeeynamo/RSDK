@@ -60,7 +60,7 @@ namespace RSDK5
                     SpriteSheet = reader.ReadByte(),
                     CollisionBox = 0,
                     Duration = reader.ReadInt16(), // Make sure this is correct
-                    ID = reader.ReadUInt16(),
+                    Id = reader.ReadUInt16(),
                     X = reader.ReadInt16(),
                     Y = reader.ReadInt16(),
                     Width = reader.ReadInt16(),
@@ -98,7 +98,7 @@ namespace RSDK5
             {
                 writer.Write((byte)entry.SpriteSheet);
                 writer.Write((short)entry.Duration); // Make sure this is correct
-                writer.Write((ushort)entry.ID);
+                writer.Write((ushort)entry.Id);
                 writer.Write((short)entry.X);
                 writer.Write((short)entry.Y);
                 writer.Write((short)entry.Width);

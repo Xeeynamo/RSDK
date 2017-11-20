@@ -33,7 +33,7 @@ namespace RSDK5
 
         public int Duration { get; set; } // Make sure this is correct
 
-        public ushort ID { get; set; }
+        public ushort Id { get; set; }
 
         public int X { get; set; }
 
@@ -61,7 +61,7 @@ namespace RSDK5
         // TODO
         public IHitbox GetHitbox(int index)
         {
-            if (Hitboxes.Length > 0 && index < Hitboxes.Length)
+            if (Hitboxes.Length >= 0 && index < Hitboxes.Length)
                 return Hitboxes[index];
             else
                 return null;

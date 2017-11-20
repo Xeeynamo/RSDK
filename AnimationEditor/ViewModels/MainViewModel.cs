@@ -340,28 +340,29 @@ namespace AnimationEditor.ViewModels
             }
         }
 
-        public ushort SelectedFrameID
+        public ushort SelectedFrameId
         {
-            get => (SelectedFrame as RSDK5.Frame)?.ID ?? 0;
+            get => (SelectedFrame as RSDK5.Frame)?.Id ?? 0;
             set
             {
                 if (SelectedFrame is RSDK5.Frame frame)
-                    frame.ID = value;
-                InvalidateCanvas();
+                {
+                    frame.Id = value;
+                    InvalidateCanvas();
+                }
             }
         }
 
         public int SelectedFrameDuration
         {
-            get
-            {
-                return (SelectedFrame as RSDK5.Frame)?.Duration ?? 0;
-            }
+            get => (SelectedFrame as RSDK5.Frame)?.Duration ?? 0;
             set
             {
                 if (SelectedFrame is RSDK5.Frame frame)
+                {
                     frame.Duration = value;
-                InvalidateCanvas();
+                    InvalidateCanvas();
+                }
             }
         }
 
@@ -454,7 +455,7 @@ namespace AnimationEditor.ViewModels
             OnPropertyChanged(nameof(SelectedFrameHeight));
             OnPropertyChanged(nameof(SelectedFramePivotX));
             OnPropertyChanged(nameof(SelectedFramePivotY));
-            OnPropertyChanged(nameof(SelectedFrameID));
+            OnPropertyChanged(nameof(SelectedFrameId));
             OnPropertyChanged(nameof(SelectedFrameDuration));
             OnPropertyChanged(nameof(SelectedHitbox));
         }
@@ -523,44 +524,54 @@ namespace AnimationEditor.ViewModels
         }
         public void FrameAdd()
         {
-            _animationData.Factory(out IFrame o);
-            AnimationFrames.Add(new FrameViewModel(_spriteService, o));
-            var frames = SelectedAnimation.GetFrames().ToList();
-            frames.Add(o);
-            SelectedAnimation.SetFrames(frames);
+            _animationData.Factory(out IFrame frame);
+            FrameAdd(frame);
+        }
+        public void FrameAdd(IFrame frame, int? insertOnIndex = null)
+        {
+            var frameVm = new FrameViewModel(_spriteService, frame);
+            var list = SelectedAnimation.GetFrames().ToList();
+            if (!insertOnIndex.HasValue)
+            {
+                AnimationFrames.Add(frameVm);
+                list.Add(frame);
+            }
+            else
+            {
+                AnimationFrames.Insert(insertOnIndex.Value, frameVm);
+                list.Insert(insertOnIndex.Value, frame);
+            }
+            SelectedAnimation.SetFrames(list);
         }
 
         public void DupeFrame()
         {
-            if (SelectedAnimation is RSDK5.AnimationEntry selectedAni)
-            {
-                var currentFrame = SelectedFrame as RSDK5.Frame;
-                var newFrame = new RSDK5.Frame(currentFrame.Hitboxes.Length);
-                
-                // Copying all the Infomation
-                newFrame.Duration = currentFrame.Duration;
-                newFrame.X = currentFrame.X;
-                newFrame.Y = currentFrame.Y;
-                newFrame.Width = currentFrame.Width;
-                newFrame.Height = currentFrame.Height;
-                newFrame.CollisionBox = currentFrame.CollisionBox;
-                newFrame.SpriteSheet = currentFrame.SpriteSheet;
-                newFrame.CenterX = currentFrame.CenterX;
-                newFrame.CenterY = currentFrame.CenterY;
+            var selectedFrame = SelectedFrame;
 
-                // HitBoxes
-                newFrame.Hitboxes = new RSDK5.Hitbox[currentFrame.Hitboxes.Length];
-                for (int i = 0; i < currentFrame.Hitboxes.Length; ++i)
+            _animationData.Factory(out IFrame newFrame);
+            newFrame.X = selectedFrame.X;
+            newFrame.Y = selectedFrame.Y;
+            newFrame.Width = selectedFrame.Width;
+            newFrame.Height = selectedFrame.Height;
+            newFrame.CollisionBox = selectedFrame.CollisionBox;
+            newFrame.SpriteSheet = selectedFrame.SpriteSheet;
+            newFrame.CenterX = selectedFrame.CenterX;
+            newFrame.CenterY = selectedFrame.CenterY;
+
+            if (newFrame is RSDK5.Frame new5Frame &&
+                selectedFrame is RSDK5.Frame selected5Frame)
+            {
+                new5Frame.Duration = selected5Frame.Duration;
+
+                // Duplicates hitboxes too.
+                new5Frame.Hitboxes = new RSDK5.Hitbox[selected5Frame.Hitboxes?.Length ?? 0];
+                for (int i = 0; i < new5Frame.Hitboxes.Length; i++)
                 {
                     var hitBox = new RSDK5.Hitbox();
-                    newFrame.Hitboxes[i] = hitBox;
+                    new5Frame.Hitboxes[i] = hitBox;
                 }
-
-                // Adds the frame to the Animation
-                AnimationFrames.Insert(SelectedFrameIndex, new FrameViewModel(_spriteService, newFrame));
-                selectedAni.Frames.Insert(SelectedFrameIndex, newFrame);
-                --SelectedFrameIndex;
             }
+            FrameAdd(newFrame, SelectedFrameIndex);
         }
 
         public void FrameRemove()

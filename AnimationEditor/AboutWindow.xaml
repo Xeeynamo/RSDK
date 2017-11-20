@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnimationEditor"
         mc:Ignorable="d"
-        Title="About" Height="128" Width="288" WindowStyle="ToolWindow">
+        Title="About" Height="164" Width="288" WindowStyle="ToolWindow">
     <StackPanel Orientation="Horizontal" Margin="10">
         <Image Width="48" Source="MainIcon.ico" VerticalAlignment="Top" Margin="0 0 10 0">
             
@@ -22,6 +22,9 @@
                     https://github.com/xeeynamo/rsdk
                 </Hyperlink>
             </TextBlock>
+            <Separator/>
+            <TextBlock Text="Additional fixes by:"/>
+            <TextBlock Text="thesupersonic16"/>
         </StackPanel>
     </StackPanel>
 </Window>

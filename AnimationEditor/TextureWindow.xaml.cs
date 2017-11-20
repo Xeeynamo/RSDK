@@ -14,7 +14,7 @@ namespace AnimationEditor
         public string BasePath { get; private set; }
 
         public TextureWindowViewModel ViewModel => DataContext as TextureWindowViewModel;
-        public MainViewModel MainViewModel {get; set;}
+        public MainViewModel MainViewModel { get; }
 
         public int SelectedIndex
         {

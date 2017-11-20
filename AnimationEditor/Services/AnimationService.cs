@@ -178,13 +178,26 @@ namespace AnimationEditor.Services
             var curAnim = CurrentAnimation;
             if (curAnim == null) return;
             if (IsRunning == false) return;
-            if (FramesPerSecond <= 0) return;
+            if ((CurrentAnimation?.Speed ?? 0) <= 0) return;
 
             int framesCount = curAnim.GetFrames().Count();
             int loop = curAnim.Loop;
             if (framesCount <= 0) return;
 
-            double freq = 1.0 / (CurrentAnimation.Speed / 4);
+            var currentFrame = curAnim.GetFrames()
+                .Skip(FrameIndex)
+                .FirstOrDefault();
+            int frameSpeed;
+            if (currentFrame is RSDK5.Frame current5Frame)
+            {
+                frameSpeed = current5Frame.Duration;
+            }
+            else
+            {
+                frameSpeed = 256;
+            }
+
+            double freq = 1.0 / ((double)CurrentAnimation.Speed / frameSpeed * 64.0);
             double timer = Stopwatch.ElapsedMilliseconds;
             var index = (int)Math.Floor(timer / (freq * 1000.0));
             if (index >= 0)

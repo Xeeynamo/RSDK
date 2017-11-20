@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnimationEditor"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="416.565" Width="660.991">
+        Title="{Binding Title}" Height="444" Width="660">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -62,17 +62,26 @@
                        IsEnabled="{Binding IsAnimationSelected}">
                 <DockPanel DockPanel.Dock="Bottom">
                     <StackPanel DockPanel.Dock="Right" VerticalAlignment="Bottom">
-                        <Button x:Name="ButtonFrameDupe" Grid.Column="1" Margin="0 0 0 5" Click="ButtonFrameDupe_Click"
-                            IsEnabled="{Binding IsAnimationSelected}">
-                            <Image Source="{StaticResource Document_16x}" Width="16"/>
-                        </Button>
-                        <Button x:Name="ButtonFrameAdd" Grid.Column="1" Margin="0 0 0 5" Click="ButtonFrameAdd_Click"
+                        <Button x:Name="ButtonFrameAdd" Grid.Column="1" Margin="0 0 0 2" Click="ButtonFrameAdd_Click"
                             IsEnabled="{Binding IsAnimationSelected}">
                             <Image Source="{StaticResource Add_16x}" Width="16"/>
+                            <Button.ToolTip>
+                                <Label Content="Create an empty frame"/>
+                            </Button.ToolTip>
+                        </Button>
+                        <Button x:Name="ButtonFrameDupe" Grid.Column="1" Margin="0 0 0 2" Click="ButtonFrameDupe_Click"
+                            IsEnabled="{Binding IsFrameSelected}">
+                            <Image Source="{StaticResource Copy_16x}" Width="16"/>
+                            <Button.ToolTip>
+                                <Label Content="Duplicate selected frame"/>
+                            </Button.ToolTip>
                         </Button>
                         <Button x:Name="ButtonFrameRemove" Grid.Column="1" Click="ButtonFrameRemove_Click"
                             IsEnabled="{Binding IsFrameSelected}">
                             <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                            <Button.ToolTip>
+                                <Label Content="Delete the selected frame"/>
+                            </Button.ToolTip>
                         </Button>
                     </StackPanel>
                     <ListBox x:Name="FramesList" ScrollViewer.HorizontalScrollBarVisibility="Visible"
