@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 using RSDK;
+using System;
 
 namespace RSDK5
 {
@@ -30,9 +31,9 @@ namespace RSDK5
 
         public int CollisionBox { get; set; }
 
-        public int Unk00 { get; set; }
+        public int Duration { get; set; } // Make sure this is correct
 
-        public int Unk01 { get; set; }
+        public ushort ID { get; set; }
 
         public int X { get; set; }
 
@@ -56,9 +57,14 @@ namespace RSDK5
                 Hitboxes[i] = new Hitbox();
             }
         }
+
+        // TODO
         public IHitbox GetHitbox(int index)
         {
-            return Hitboxes[index];
+            if (Hitboxes.Length > 0 && index < Hitboxes.Length)
+                return Hitboxes[index];
+            else
+                return null;
         }
     }
 }

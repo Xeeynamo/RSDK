@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnimationEditor"
         mc:Ignorable="d"
-        Title="Texture manager" Height="405" Width="292">
+        Title="Texture manager" Height="633.12" Width="690.52">
     <DockPanel Margin="10">
         <TextBlock DockPanel.Dock="Top" Text="List of texture files" Margin="5 0 0 5"/>
         <DockPanel DockPanel.Dock="Top" Margin="0 0 0 5">

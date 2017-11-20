@@ -14,6 +14,7 @@ namespace AnimationEditor
         public string BasePath { get; private set; }
 
         public TextureWindowViewModel ViewModel => DataContext as TextureWindowViewModel;
+        public MainViewModel MainViewModel {get; set;}
 
         public int SelectedIndex
         {
@@ -24,6 +25,15 @@ namespace AnimationEditor
         public TextureWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
+            MainViewModel = mainViewModel;
+            DataContext = new TextureWindowViewModel(mainViewModel, BasePath);
+        }
+
+        public TextureWindow(MainViewModel mainViewModel, string basePath)
+        {
+            InitializeComponent();
+            BasePath = basePath;
+            MainViewModel = mainViewModel;
             DataContext = new TextureWindowViewModel(mainViewModel, BasePath);
         }
 
@@ -44,13 +54,14 @@ namespace AnimationEditor
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.ImagePng);
+            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.ImageGif);
             if (dialog.ShowDialog() == true)
             {
                 var fileName = AddTextureToDirectory(dialog.FileName);
                 if (fileName != null)
                 {
                     ViewModel.AddTexture(fileName);
+                    MainViewModel.AnimationData.SpriteSheets.Add(fileName);
                     SelectedIndex = ViewModel.Count - 1;
                 }
             }
@@ -115,7 +126,7 @@ namespace AnimationEditor
         /// <returns>File name only</returns>
         private string AddTextureToDirectory(string filePath)
         {
-            var fileName = Path.GetFileName(filePath);
+            var fileName = filePath.Substring(BasePath.Length + 1);
             var outputPath = Path.Combine(BasePath, fileName);
             if (Path.GetFullPath(filePath) != outputPath)
             {
@@ -133,7 +144,7 @@ namespace AnimationEditor
             {
                 //Log.Message($"Input and output file {filePath} does match; no need to copy.");
             }
-            return fileName;
+            return fileName.Replace('\\', '/');
         }
     }
 }
