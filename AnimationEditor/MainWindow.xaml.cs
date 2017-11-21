@@ -52,14 +52,69 @@ namespace AnimationEditor
             Close();
         }
 
-        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
+        private void ButtonAnimationAdd_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.AnimationAdd();
         }
 
-        private void ButtonRemove_Click(object sender, RoutedEventArgs e)
+        private void ButtonAnimationDuplicate_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.AnimationDuplicate();
+        }
+
+        private void ButtonAnimationRemove_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.AnimationRemove();
+        }
+
+        private void ButtonAnimationImport_Click(object sender, RoutedEventArgs e)
+        {
+            var version = ViewModel.AnimationData.Version;
+            Xe.Tools.Wpf.Dialogs.FileDialog.Type fileType;
+            switch (version)
+            {
+                case 3:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Rsdk3Animation;
+                    break;
+                case 5:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Rsdk5Animation;
+                    break;
+                default:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Any;
+                    break;
+            }
+
+            var fd = Xe.Tools.Wpf.Dialogs.FileDialog.Factory(this,
+                Xe.Tools.Wpf.Dialogs.FileDialog.Behavior.Open, fileType, false);
+            if (fd.ShowDialog() == true)
+            {
+                ViewModel.AnimationImport(fd.FileName);
+            }
+        }
+
+        private void ButtonAnimationExport_Click(object sender, RoutedEventArgs e)
+        {
+            var version = ViewModel.AnimationData.Version;
+            Xe.Tools.Wpf.Dialogs.FileDialog.Type fileType;
+            switch (version)
+            {
+                case 3:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Rsdk3Animation;
+                    break;
+                case 5:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Rsdk5Animation;
+                    break;
+                default:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Any;
+                    break;
+            }
+
+            var fd = Xe.Tools.Wpf.Dialogs.FileDialog.Factory(this,
+                Xe.Tools.Wpf.Dialogs.FileDialog.Behavior.Save, fileType, false);
+            if (fd.ShowDialog() == true)
+            {
+                ViewModel.AnimationExport(fd.FileName);
+            }
         }
 
         private void ButtonFrameAdd_Click(object sender, RoutedEventArgs e)
@@ -75,6 +130,56 @@ namespace AnimationEditor
         private void ButtonFrameRemove_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.FrameRemove();
+        }
+
+        private void ButtonFrameImport_Click(object sender, RoutedEventArgs e)
+        {
+            var version = ViewModel.AnimationData.Version;
+            Xe.Tools.Wpf.Dialogs.FileDialog.Type fileType;
+            switch (version)
+            {
+                case 3:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Rsdk3Frame;
+                    break;
+                case 5:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Rsdk5Frame;
+                    break;
+                default:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Any;
+                    break;
+            }
+
+            var fd = Xe.Tools.Wpf.Dialogs.FileDialog.Factory(this,
+                Xe.Tools.Wpf.Dialogs.FileDialog.Behavior.Open, fileType, false);
+            if (fd.ShowDialog() == true)
+            {
+                ViewModel.FrameImport(fd.FileName);
+            }
+        }
+
+        private void ButtonFrameExport_Click(object sender, RoutedEventArgs e)
+        {
+            var version = ViewModel.AnimationData.Version;
+            Xe.Tools.Wpf.Dialogs.FileDialog.Type fileType;
+            switch (version)
+            {
+                case 3:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Rsdk3Frame;
+                    break;
+                case 5:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Rsdk5Frame;
+                    break;
+                default:
+                    fileType = Xe.Tools.Wpf.Dialogs.FileDialog.Type.Any;
+                    break;
+            }
+
+            var fd = Xe.Tools.Wpf.Dialogs.FileDialog.Factory(this,
+                Xe.Tools.Wpf.Dialogs.FileDialog.Behavior.Save, fileType, false);
+            if (fd.ShowDialog() == true)
+            {
+                ViewModel.FrameExport(fd.FileName);
+            }
         }
 
         private void ButtonZoomIn_Click(object sender, RoutedEventArgs e)

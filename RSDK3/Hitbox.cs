@@ -17,13 +17,23 @@ namespace RSDK3
 
         public Hitbox(BinaryReader reader)
         {
+            Read(reader);
+        }
+
+        public void SaveChanges(BinaryWriter writer)
+        {
+            Write(writer);
+        }
+
+        public void Read(BinaryReader reader)
+        {
             Left = reader.ReadSByte();
             Top = reader.ReadSByte();
             Right = reader.ReadSByte();
             Bottom = reader.ReadSByte();
         }
 
-        public void SaveChanges(BinaryWriter writer)
+        public void Write(BinaryWriter writer)
         {
             writer.Write((sbyte)Left);
             writer.Write((sbyte)Top);

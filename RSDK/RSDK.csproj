@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="IAnimation.cs" />
+    <Compile Include="IBinarySerializable.cs" />
     <Compile Include="IHitbox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

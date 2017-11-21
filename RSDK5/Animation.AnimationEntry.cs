@@ -31,6 +31,8 @@ namespace RSDK5
 {
     public class AnimationEntry : IAnimationEntry
     {
+        private int _collisionBoxesCount;
+
         public List<Frame> Frames { get; private set; } = new List<Frame>();
 
         public string Name { get; set; }
@@ -41,37 +43,15 @@ namespace RSDK5
 
         public int Flags { get; set; }
 
-        public AnimationEntry()
+        public AnimationEntry(int collisionBoxesCount)
         {
+            _collisionBoxesCount = collisionBoxesCount;
         }
 
         public AnimationEntry(BinaryReader reader, int collisionBoxesCount)
         {
-            Name = StringEncoding.GetString(reader);
-
-            var framesCount = reader.ReadInt16();
-            Speed = reader.ReadInt16();
-            Loop = reader.ReadByte();
-            Flags = reader.ReadByte();
-            for (int i = 0; i < framesCount; i++)
-            {
-                var frame = new Frame(collisionBoxesCount)
-                {
-                    SpriteSheet = reader.ReadByte(),
-                    CollisionBox = 0,
-                    Duration = reader.ReadInt16(), // Make sure this is correct
-                    Id = reader.ReadUInt16(),
-                    X = reader.ReadInt16(),
-                    Y = reader.ReadInt16(),
-                    Width = reader.ReadInt16(),
-                    Height = reader.ReadInt16(),
-                    CenterX = reader.ReadInt16(),
-                    CenterY = reader.ReadInt16(),
-                };
-                for (int j = 0; j < collisionBoxesCount; j++)
-                    frame.Hitboxes[j] = new Hitbox(reader);
-                Frames.Add(frame);
-            }
+            _collisionBoxesCount = collisionBoxesCount;
+            SubRead(reader, collisionBoxesCount, collisionBoxesCount);
         }
 
         public IEnumerable<IFrame> GetFrames()
@@ -89,27 +69,20 @@ namespace RSDK5
 
         public void SaveChanges(BinaryWriter writer)
         {
-            writer.Write(StringEncoding.GetBytes(Name));
-            writer.Write((short)Frames.Count);
-            writer.Write((short)Speed);
-            writer.Write((byte)Loop);
-            writer.Write((byte)Flags);
-            foreach (var entry in Frames)
-            {
-                writer.Write((byte)entry.SpriteSheet);
-                writer.Write((short)entry.Duration); // Make sure this is correct
-                writer.Write((ushort)entry.Id);
-                writer.Write((short)entry.X);
-                writer.Write((short)entry.Y);
-                writer.Write((short)entry.Width);
-                writer.Write((short)entry.Height);
-                writer.Write((short)entry.CenterX);
-                writer.Write((short)entry.CenterY);
-                foreach (var hb in entry.Hitboxes)
-                {
-                    hb.SaveChanges(writer);
-                }
-            }
+            SubWrite(writer);
+        }
+
+
+        public void Read(BinaryReader reader)
+        {
+            int count = reader.ReadInt32();
+            SubRead(reader, _collisionBoxesCount, count);
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(_collisionBoxesCount);
+            SubWrite(writer);
         }
 
         public override string ToString()
@@ -120,7 +93,7 @@ namespace RSDK5
 
         public object Clone()
         {
-            return new AnimationEntry()
+            return new AnimationEntry(_collisionBoxesCount)
             {
                 Frames = Frames.Select(x => x.Clone() as Frame).ToList(),
                 Name = Name,
@@ -128,6 +101,33 @@ namespace RSDK5
                 Loop = Loop,
                 Flags = Flags
             };
+        }
+
+        // This part is tricky...
+        // Sonic Mania has a different hitboxes count. If you import an
+        // animation that has a different hitboxes count than the acutal
+        // animation, we need to handle this special case.
+        private void SubRead(BinaryReader reader, int cbDst, int cbSrc)
+        {
+            Name = StringEncoding.GetString(reader);
+
+            var framesCount = reader.ReadInt16();
+            Speed = reader.ReadInt16();
+            Loop = reader.ReadByte();
+            Flags = reader.ReadByte();
+            for (int i = 0; i < framesCount; i++)
+                Frames.Add(new Frame(reader, cbDst));
+        }
+
+        private void SubWrite(BinaryWriter writer)
+        {
+            writer.Write(StringEncoding.GetBytes(Name));
+            writer.Write((short)Frames.Count);
+            writer.Write((short)Speed);
+            writer.Write((byte)Loop);
+            writer.Write((byte)Flags);
+            foreach (var entry in Frames)
+                entry.SaveChanges(writer);
         }
     }
 }

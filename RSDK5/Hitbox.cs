@@ -17,13 +17,23 @@ namespace RSDK5
 
         public Hitbox(BinaryReader reader)
         {
+            Read(reader);
+        }
+
+        public void SaveChanges(BinaryWriter writer)
+        {
+            Write(writer);
+        }
+
+        public void Read(BinaryReader reader)
+        {
             Left = reader.ReadInt16();
             Top = reader.ReadInt16();
             Right = reader.ReadInt16();
             Bottom = reader.ReadInt16();
         }
 
-        public void SaveChanges(BinaryWriter writer)
+        public void Write(BinaryWriter writer)
         {
             writer.Write((short)Left);
             writer.Write((short)Top);

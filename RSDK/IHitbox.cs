@@ -3,7 +3,7 @@ using System.IO;
 
 namespace RSDK
 {
-    public interface IHitbox : ICloneable
+    public interface IHitbox : ICloneable, IBinarySerializable, ISaveChanges
     {
         int Left { get; set; }
 
@@ -12,7 +12,5 @@ namespace RSDK
         int Right { get; set; }
 
         int Bottom { get; set; }
-
-        void SaveChanges(BinaryWriter writer);
     }
 }

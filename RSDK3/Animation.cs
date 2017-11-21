@@ -30,6 +30,8 @@ namespace RSDK3
 {
     public class Animation : IAnimation
     {
+        public int Version => 3;
+
         public List<string> SpriteSheets { get; }
 
         public List<AnimationEntry> Animations { get; }

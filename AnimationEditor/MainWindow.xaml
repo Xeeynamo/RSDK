@@ -33,57 +33,65 @@
             </Grid.ColumnDefinitions>
 
             <DockPanel Grid.Column="0">
-                <Grid DockPanel.Dock="Bottom">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="3*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="ButtonAdd" Grid.Column="0" Margin="0 5 5 0" Click="ButtonAdd_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{StaticResource Add_16x}" Width="16"/>
-                            <TextBlock Text="Add" Margin="3 0 3 0"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="ButtonRemove" Grid.Column="1" Margin="0 5 0 0" Click="ButtonRemove_Click"
-                            IsEnabled="{Binding IsAnimationSelected}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
-                            <TextBlock Text="Remove" Margin="3 0 3 0"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
-                <ListBox x:Name="List" Grid.Column="0" ItemsSource="{Binding Animations}" DisplayMemberPath="Name"
+                <DockPanel Grid.Column="0">
+                    <ToolBarPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+
+                        <Button BorderThickness="0" Background="Transparent" Click="ButtonAnimationAdd_Click">
+                            <Image Width="16" Source="{StaticResource Add_16x}"/>
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <Label>Create an empty animation.</Label>
+                                </StackPanel>
+                            </Button.ToolTip>
+                        </Button>
+
+                        <Button BorderThickness="0" Background="Transparent" Click="ButtonAnimationDuplicate_Click">
+                            <Image Width="16" Source="{StaticResource Copy_16x}"/>
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <Label>Duplicate the selected animation.</Label>
+                                </StackPanel>
+                            </Button.ToolTip>
+                        </Button>
+
+                        <Button BorderThickness="0" Background="Transparent" Click="ButtonAnimationRemove_Click">
+                            <Image Width="16" Source="{StaticResource Remove_color_16x}"/>
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <Label>Remove the selected animation.</Label>
+                                </StackPanel>
+                            </Button.ToolTip>
+                        </Button>
+
+                        <Button BorderThickness="0" Background="Transparent" Click="ButtonAnimationImport_Click">
+                            <Image Width="16" Source="{StaticResource Import_16x}"/>
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <Label>Import the selected animation from a file.</Label>
+                                </StackPanel>
+                            </Button.ToolTip>
+                        </Button>
+
+                        <Button BorderThickness="0" Background="Transparent" Click="ButtonAnimationExport_Click">
+                            <Image Width="16" Source="{StaticResource Export_16x}"/>
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <Label>Export the selected animation to a file.</Label>
+                                </StackPanel>
+                            </Button.ToolTip>
+                        </Button>
+
+                    </ToolBarPanel>
+                    <ListBox x:Name="List" ItemsSource="{Binding Animations}" DisplayMemberPath="Name"
                          SelectedItem="{Binding SelectedAnimation, Mode=OneWayToSource}"
                          SelectedIndex="{Binding SelectedAnimationIndex, Mode=TwoWay}"
                          MouseDoubleClick="List_MouseDoubleClick"/>
+                </DockPanel>
             </DockPanel>
 
             <DockPanel Grid.Column="2"
                        IsEnabled="{Binding IsAnimationSelected}">
                 <DockPanel DockPanel.Dock="Bottom">
-                    <StackPanel DockPanel.Dock="Right" VerticalAlignment="Bottom">
-                        <Button x:Name="ButtonFrameAdd" Grid.Column="1" Margin="0 0 0 2" Click="ButtonFrameAdd_Click"
-                            IsEnabled="{Binding IsAnimationSelected}">
-                            <Image Source="{StaticResource Add_16x}" Width="16"/>
-                            <Button.ToolTip>
-                                <Label Content="Create an empty frame"/>
-                            </Button.ToolTip>
-                        </Button>
-                        <Button x:Name="ButtonFrameDupe" Grid.Column="1" Margin="0 0 0 2" Click="ButtonFrameDupe_Click"
-                            IsEnabled="{Binding IsFrameSelected}">
-                            <Image Source="{StaticResource Copy_16x}" Width="16"/>
-                            <Button.ToolTip>
-                                <Label Content="Duplicate selected frame"/>
-                            </Button.ToolTip>
-                        </Button>
-                        <Button x:Name="ButtonFrameRemove" Grid.Column="1" Click="ButtonFrameRemove_Click"
-                            IsEnabled="{Binding IsFrameSelected}">
-                            <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
-                            <Button.ToolTip>
-                                <Label Content="Delete the selected frame"/>
-                            </Button.ToolTip>
-                        </Button>
-                    </StackPanel>
                     <ListBox x:Name="FramesList" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding AnimationFrames}" SelectedIndex="{Binding SelectedFrameIndex}">
                         <ListBox.ItemsPanel>
@@ -108,7 +116,7 @@
                             </StackPanel>
                         </ToggleButton.ToolTip>
                     </ToggleButton>
-                    <Button x:Name="ButtonRewind">
+                    <Button x:Name="ButtonRewind" Visibility="Collapsed">
                         <Image Width="16"/>
                         <Button.ToolTip>
                             <StackPanel>
@@ -132,7 +140,7 @@
                             </StackPanel>
                         </Button.ToolTip>
                     </Button>
-                    <ToggleButton x:Name="ButtonShowCenter" IsChecked="{Binding ShowCenter, Mode=TwoWay}">
+                    <ToggleButton x:Name="ButtonShowCenter" IsChecked="{Binding ShowCenter, Mode=TwoWay}" Visibility="Collapsed">
                         <Image Width="16" Source="{StaticResource TableInsideBorder_16x}"/>
                         <ToggleButton.ToolTip>
                             <StackPanel>
@@ -140,7 +148,7 @@
                             </StackPanel>
                         </ToggleButton.ToolTip>
                     </ToggleButton>
-                    <ToggleButton x:Name="ButtonShowFieldHitbox" IsChecked="{Binding ShowFieldHitbox, Mode=TwoWay}">
+                    <ToggleButton x:Name="ButtonShowFieldHitbox" IsChecked="{Binding ShowFieldHitbox, Mode=TwoWay}" Visibility="Collapsed">
                         <Image Width="16" Source="{StaticResource AppearanceTabSolid_16x}"/>
                         <ToggleButton.ToolTip>
                             <StackPanel>
@@ -148,7 +156,7 @@
                             </StackPanel>
                         </ToggleButton.ToolTip>
                     </ToggleButton>
-                    <ToggleButton x:Name="ButtonShowEntityHitbox" IsChecked="{Binding ShowEntityHitbox, Mode=TwoWay}">
+                    <ToggleButton x:Name="ButtonShowEntityHitbox" IsChecked="{Binding ShowEntityHitbox, Mode=TwoWay}" Visibility="Collapsed">
                         <Image Width="16" Source="{StaticResource AppearanceTabSwatch_16x}"/>
                         <ToggleButton.ToolTip>
                             <StackPanel>
@@ -156,6 +164,44 @@
                             </StackPanel>
                         </ToggleButton.ToolTip>
                     </ToggleButton>
+
+                    <Separator Margin="5 0 5 0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+                    <Button x:Name="ButtonFrameAdd" Grid.Column="1" Click="ButtonFrameAdd_Click"
+                            IsEnabled="{Binding IsAnimationSelected}">
+                        <Image Source="{StaticResource Add_16x}" Width="16"/>
+                        <Button.ToolTip>
+                            <Label Content="Create an empty frame"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button x:Name="ButtonFrameDupe" Grid.Column="1" Click="ButtonFrameDupe_Click"
+                            IsEnabled="{Binding IsFrameSelected}">
+                        <Image Source="{StaticResource Copy_16x}" Width="16"/>
+                        <Button.ToolTip>
+                            <Label Content="Duplicate selected frame"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button x:Name="ButtonFrameRemove" Grid.Column="1" Click="ButtonFrameRemove_Click"
+                            IsEnabled="{Binding IsFrameSelected}">
+                        <Image Source="{StaticResource Remove_color_16x}" Width="16"/>
+                        <Button.ToolTip>
+                            <Label Content="Delete the selected frame"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button x:Name="ButtonFrameImport" Grid.Column="1" Click="ButtonFrameImport_Click">
+                        <Image Source="{StaticResource Import_16x}" Width="16"/>
+                        <Button.ToolTip>
+                            <Label Content="Import an existing frame"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button x:Name="ButtonFrameExport" Grid.Column="1" Click="ButtonFrameExport_Click"
+                            IsEnabled="{Binding IsFrameSelected}">
+                        <Image Source="{StaticResource Export_16x}" Width="16"/>
+                        <Button.ToolTip>
+                            <Label Content="Export the selected frame"/>
+                        </Button.ToolTip>
+                    </Button>
+
                 </StackPanel>
                 <Canvas Margin="0 0 0 5" SizeChanged="Canvas_SizeChanged"
                         RenderOptions.BitmapScalingMode="NearestNeighbor"

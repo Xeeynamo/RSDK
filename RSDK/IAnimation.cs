@@ -40,7 +40,7 @@ namespace RSDK
         InnerWallRight, OuterWallRight,
     }
 
-    public interface IFrame : ICloneable
+    public interface IFrame : ICloneable, IBinarySerializable, ISaveChanges
     {
         int SpriteSheet { get; set; }
 
@@ -61,7 +61,7 @@ namespace RSDK
         IHitbox GetHitbox(int index);
     }
 
-    public interface IAnimationEntry : ICloneable
+    public interface IAnimationEntry : ICloneable, IBinarySerializable, ISaveChanges
     {
         string Name { get; set; }
 
@@ -82,8 +82,9 @@ namespace RSDK
         IHitbox GetHitbox(int index);
     }
 
-    public interface IAnimation
+    public interface IAnimation : ISaveChanges
     {
+        int Version { get; }
         IEnumerable<string> HitboxTypes { get; }
         List<string> SpriteSheets { get; }
 
@@ -101,7 +102,5 @@ namespace RSDK
         void SetHitboxes(IEnumerable<IHitboxEntry> hitboxes);
 
         void SetHitboxTypes(IEnumerable<string> hitboxTypes);
-
-        void SaveChanges(BinaryWriter writer);
     }
 }

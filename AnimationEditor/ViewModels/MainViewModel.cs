@@ -33,8 +33,13 @@ namespace AnimationEditor.ViewModels
             }
 
             public void SaveChanges(BinaryWriter writer)
-            {
-            }
+            { }
+
+            public void Read(BinaryReader reader)
+            { }
+
+            public void Write(BinaryWriter writer)
+            { }
         }
 
         private string _pathMod;
@@ -217,7 +222,7 @@ namespace AnimationEditor.ViewModels
 
         public int SelectedAnimationIndex { get; set; }
 
-        public bool IsFrameSelected => SelectedFrame != null && SelectedAnimation.GetFrames().Count() > 0;
+        public bool IsFrameSelected => SelectedFrame != null && SelectedAnimation?.GetFrames().Count() > 0;
 
         public int FramesCount => SelectedAnimation?.GetFrames().Count() ?? 0;
 
@@ -529,10 +534,44 @@ namespace AnimationEditor.ViewModels
             _animationData.Factory(out IAnimationEntry o);
             Animations.Add(o);
         }
+        public void AnimationDuplicate()
+        {
+            var selectedAnimation = SelectedAnimation;
+            if (selectedAnimation != null)
+                Animations.Add(selectedAnimation.Clone() as IAnimationEntry);
+        }
         public void AnimationRemove()
         {
             Animations.Remove(SelectedAnimation);
         }
+        public void AnimationImport(string fileName)
+        {
+            if (!File.Exists(fileName)) return;
+
+            using (var fStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+            {
+                using (var reader = new BinaryReader(fStream))
+                {
+                    _animationData.Factory(out IAnimationEntry o);
+                    o.Read(reader);
+                    Animations.Add(o);
+                }
+            }
+        }
+        public void AnimationExport(string fileName)
+        {
+            var selectedAnimation = SelectedAnimation;
+            if (selectedAnimation == null) return;
+
+            using (var fStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Read))
+            {
+                using (var writer = new BinaryWriter(fStream))
+                {
+                    selectedAnimation.Write(writer);
+                }
+            }
+        }
+
         public void FrameAdd()
         {
             _animationData.Factory(out IFrame frame);
@@ -574,6 +613,37 @@ namespace AnimationEditor.ViewModels
                     SelectedAnimation.SetFrames(frames);
                     SelectedFrameIndex = frames.Count - 1;
                     OnPropertyChanged(nameof(IsFrameSelected));
+                }
+            }
+        }
+
+        public void FrameImport(string fileName)
+        {
+            if (!File.Exists(fileName)) return;
+            var selectedAnimation = SelectedAnimation;
+            if (selectedAnimation == null) return;
+
+            using (var fStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+            {
+                using (var reader = new BinaryReader(fStream))
+                {
+                    _animationData.Factory(out IFrame o);
+                    o.Read(reader);
+                    FrameAdd(o, SelectedFrameIndex);
+                }
+            }
+        }
+
+        public void FrameExport(string fileName)
+        {
+            var selectedFrame = SelectedFrame;
+            if (selectedFrame == null) return;
+
+            using (var fStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Read))
+            {
+                using (var writer = new BinaryWriter(fStream))
+                {
+                    selectedFrame.Write(writer);
                 }
             }
         }

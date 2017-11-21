@@ -31,6 +31,8 @@ namespace RSDK5
     public class Animation : IAnimation
     {
         const int MagicCode = 0x00525053;
+        
+        public int Version => 5;
 
         public int TotalFramesCount;
 
@@ -66,7 +68,7 @@ namespace RSDK5
                 Animations.Add(new AnimationEntry(reader, CollisionBoxes.Count));
         }
 
-        public void Factory(out IAnimationEntry o) { o = new AnimationEntry(); }
+        public void Factory(out IAnimationEntry o) { o = new AnimationEntry(CollisionBoxes.Count); }
         public void Factory(out IFrame o) { o = new Frame(CollisionBoxes.Count); }
         public void Factory(out IHitboxEntry o) { o = null; }
 

@@ -46,7 +46,12 @@ namespace Xe.Tools.Wpf.Dialogs
             XeGameProject,
             XeAnimation,
             ImagePng,
-            ImageGif
+            ImageGif,
+
+            Rsdk3Animation,
+            Rsdk3Frame,
+            Rsdk5Animation,
+            Rsdk5Frame
         }
 
         private CommonFileDialog _fd;
@@ -95,7 +100,8 @@ namespace Xe.Tools.Wpf.Dialogs
                 case Behavior.Save:
                     fd = new CommonSaveFileDialog()
                     {
-
+                        AlwaysAppendDefaultExtension = true,
+                        
                     };
                     break;
                 case Behavior.Folder:
@@ -142,6 +148,22 @@ namespace Xe.Tools.Wpf.Dialogs
                     case Type.ImageGif:
                         fd.Filters.Add(CreateFilter("GIF image files",
                             new string[] { "gif" }));
+                        break;
+                    case Type.Rsdk3Animation:
+                        fd.Filters.Add(CreateFilter("RSDK3 animation files",
+                            new string[] { "anim.rsdk3" }));
+                        break;
+                    case Type.Rsdk3Frame:
+                        fd.Filters.Add(CreateFilter("RSDK3 frame files",
+                            new string[] { "frame.rsdk3" }));
+                        break;
+                    case Type.Rsdk5Animation:
+                        fd.Filters.Add(CreateFilter("RSDK5 animation files",
+                            new string[] { "anim.rsdk5" }));
+                        break;
+                    case Type.Rsdk5Frame:
+                        fd.Filters.Add(CreateFilter("RSDK5 frame files",
+                            new string[] { "frame.rsdk5" }));
                         break;
                     default:
                         break;

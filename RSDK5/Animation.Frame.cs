@@ -21,12 +21,16 @@
 // SOFTWARE.
 
 using RSDK;
+using System;
+using System.IO;
 using System.Linq;
 
 namespace RSDK5
 {
     public class Frame : IFrame
     {
+        private int _collisionBoxesCount;
+
         public int SpriteSheet { get; set; }
 
         public int CollisionBox { get; set; }
@@ -48,22 +52,46 @@ namespace RSDK5
         public int CenterY { get; set; }
 
         public Hitbox[] Hitboxes { get; private set; }
-        
-        public Frame(int hitboxesCount = 0)
+
+        public Frame(int collisionBoxesCount = 0)
         {
-            Hitboxes = new Hitbox[hitboxesCount];
-            for (int i = 0; i < hitboxesCount; i++)
-            {
+            _collisionBoxesCount = collisionBoxesCount;
+
+            Hitboxes = new Hitbox[collisionBoxesCount];
+            for (int i = 0; i < collisionBoxesCount; i++)
                 Hitboxes[i] = new Hitbox();
-            }
         }
-        
+
+        public Frame(BinaryReader reader, int collisionBoxesCount = 0)
+        {
+            _collisionBoxesCount = collisionBoxesCount;
+            Hitboxes = new Hitbox[collisionBoxesCount];
+            SubRead(reader, collisionBoxesCount, collisionBoxesCount);
+        }
+
         public IHitbox GetHitbox(int index)
         {
             if (Hitboxes.Length >= 0 && index < Hitboxes.Length)
                 return Hitboxes[index];
             else
                 return null;
+        }
+
+        public void SaveChanges(BinaryWriter writer)
+        {
+            SubWrite(writer);
+        }
+
+        public void Read(BinaryReader reader)
+        {
+            int count = reader.ReadInt32();
+            SubRead(reader, _collisionBoxesCount, count);
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(_collisionBoxesCount);
+            SubWrite(writer);
         }
 
         public object Clone()
@@ -82,6 +110,41 @@ namespace RSDK5
                 CenterY = CenterY,
                 Hitboxes = Hitboxes.Select(x => x.Clone() as Hitbox).ToArray()
             };
+        }
+
+        private void SubRead(BinaryReader reader, int cbDst, int cbSrc)
+        {
+            SpriteSheet = reader.ReadByte();
+            CollisionBox = 0;
+            Duration = reader.ReadInt16();
+            Id = reader.ReadUInt16();
+            X = reader.ReadInt16();
+            Y = reader.ReadInt16();
+            Width = reader.ReadInt16();
+            Height = reader.ReadInt16();
+            CenterX = reader.ReadInt16();
+            CenterY = reader.ReadInt16();
+
+            var collisionBoxesCount = Math.Min(cbDst, cbSrc);
+            for (int j = 0; j < collisionBoxesCount; j++)
+                Hitboxes[j] = new Hitbox(reader);
+            for (int j = collisionBoxesCount; j < cbDst; j++)
+                Hitboxes[j] = new Hitbox();
+        }
+
+        private void SubWrite(BinaryWriter writer)
+        {
+            writer.Write((byte)SpriteSheet);
+            writer.Write((short)Duration);
+            writer.Write((ushort)Id);
+            writer.Write((short)X);
+            writer.Write((short)Y);
+            writer.Write((short)Width);
+            writer.Write((short)Height);
+            writer.Write((short)CenterX);
+            writer.Write((short)CenterY);
+            foreach (var hb in Hitboxes)
+                hb.Write(writer);
         }
     }
 }

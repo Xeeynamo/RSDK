@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.IO;
 using RSDK;
 
 namespace RSDK3
@@ -45,6 +46,35 @@ namespace RSDK3
         public IHitbox GetHitbox(int index)
         {
             return new Hitbox();
+        }
+
+        public void SaveChanges(BinaryWriter writer)
+        {
+            Write(writer);
+        }
+
+        public void Read(BinaryReader reader)
+        {
+            SpriteSheet = reader.ReadByte();
+            CollisionBox = reader.ReadByte();
+            X = reader.ReadByte();
+            Y = reader.ReadByte();
+            Width = reader.ReadByte();
+            Height = reader.ReadByte();
+            CenterX = reader.ReadSByte();
+            CenterY = reader.ReadSByte();
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write((byte)SpriteSheet);
+            writer.Write((byte)CollisionBox);
+            writer.Write((byte)X);
+            writer.Write((byte)Y);
+            writer.Write((byte)Width);
+            writer.Write((byte)Height);
+            writer.Write((byte)CenterX);
+            writer.Write((byte)CenterY);
         }
 
         public object Clone()

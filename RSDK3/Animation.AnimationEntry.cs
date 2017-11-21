@@ -45,26 +45,7 @@ namespace RSDK3
 
         public AnimationEntry(BinaryReader reader)
         {
-            Name = StringEncoding.GetString(reader);
-
-            var framesCount = reader.ReadByte();
-            Speed = reader.ReadByte();
-            Loop = reader.ReadByte();
-            Flags = reader.ReadByte();
-            for (int i = 0; i < framesCount; i++)
-            {
-                Frames.Add(new Frame()
-                {
-                    SpriteSheet = reader.ReadByte(),
-                    CollisionBox = reader.ReadByte(),
-                    X = reader.ReadByte(),
-                    Y = reader.ReadByte(),
-                    Width = reader.ReadByte(),
-                    Height = reader.ReadByte(),
-                    CenterX = reader.ReadSByte(),
-                    CenterY = reader.ReadSByte()
-                });
-            }
+            Read(reader);
         }
 
         public IEnumerable<IFrame> GetFrames()
@@ -82,22 +63,34 @@ namespace RSDK3
 
         public void SaveChanges(BinaryWriter writer)
         {
+            Write(writer);
+        }
+
+        public void Read(BinaryReader reader)
+        {
+            Name = StringEncoding.GetString(reader);
+
+            var framesCount = reader.ReadByte();
+            Speed = reader.ReadByte();
+            Loop = reader.ReadByte();
+            Flags = reader.ReadByte();
+            for (int i = 0; i < framesCount; i++)
+            {
+                var frame = new Frame();
+                frame.Read(reader);
+                Frames.Add(frame);
+            }
+        }
+
+        public void Write(BinaryWriter writer)
+        {
             writer.Write(StringEncoding.GetBytes(Name));
             writer.Write((byte)Frames.Count);
             writer.Write((byte)Speed);
             writer.Write((byte)Loop);
             writer.Write((byte)Flags);
             foreach (var entry in Frames)
-            {
-                writer.Write((byte)entry.SpriteSheet);
-                writer.Write((byte)entry.CollisionBox);
-                writer.Write((byte)entry.X);
-                writer.Write((byte)entry.Y);
-                writer.Write((byte)entry.Width);
-                writer.Write((byte)entry.Height);
-                writer.Write((byte)entry.CenterX);
-                writer.Write((byte)entry.CenterY);
-            }
+                entry.Write(writer);
         }
 
         public override string ToString()
