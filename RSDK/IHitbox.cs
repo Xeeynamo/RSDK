@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace RSDK
 {
-    public interface IHitbox
+    public interface IHitbox : ICloneable
     {
         int Left { get; set; }
 

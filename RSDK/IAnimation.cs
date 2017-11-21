@@ -40,7 +40,7 @@ namespace RSDK
         InnerWallRight, OuterWallRight,
     }
 
-    public interface IFrame
+    public interface IFrame : ICloneable
     {
         int SpriteSheet { get; set; }
 
@@ -61,7 +61,7 @@ namespace RSDK
         IHitbox GetHitbox(int index);
     }
 
-    public interface IAnimationEntry
+    public interface IAnimationEntry : ICloneable
     {
         string Name { get; set; }
 

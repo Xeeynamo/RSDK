@@ -31,7 +31,7 @@ namespace RSDK5
 {
     public class AnimationEntry : IAnimationEntry
     {
-        public List<Frame> Frames { get; } = new List<Frame>();
+        public List<Frame> Frames { get; private set; } = new List<Frame>();
 
         public string Name { get; set; }
         
@@ -116,6 +116,18 @@ namespace RSDK5
         {
             return string.IsNullOrEmpty(Name) ?
                 "<new animation>" : Name;
+        }
+
+        public object Clone()
+        {
+            return new AnimationEntry()
+            {
+                Frames = Frames.Select(x => x.Clone() as Frame).ToList(),
+                Name = Name,
+                Speed = Speed,
+                Loop = Loop,
+                Flags = Flags
+            };
         }
     }
 }

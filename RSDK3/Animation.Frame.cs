@@ -46,5 +46,20 @@ namespace RSDK3
         {
             return new Hitbox();
         }
+
+        public object Clone()
+        {
+            return new Frame()
+            {
+                SpriteSheet = SpriteSheet,
+                CollisionBox = CollisionBox,
+                X = X,
+                Y = Y,
+                Width = Width,
+                Height = Height,
+                CenterX = CenterX,
+                CenterY = CenterY
+            };
+        }
     }
 }

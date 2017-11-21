@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 using RSDK;
-using System;
+using System.Linq;
 
 namespace RSDK5
 {
@@ -31,7 +31,7 @@ namespace RSDK5
 
         public int CollisionBox { get; set; }
 
-        public int Duration { get; set; } // Make sure this is correct
+        public int Duration { get; set; }
 
         public ushort Id { get; set; }
 
@@ -47,7 +47,7 @@ namespace RSDK5
 
         public int CenterY { get; set; }
 
-        public Hitbox[] Hitboxes { get; set; }
+        public Hitbox[] Hitboxes { get; private set; }
         
         public Frame(int hitboxesCount = 0)
         {
@@ -57,14 +57,31 @@ namespace RSDK5
                 Hitboxes[i] = new Hitbox();
             }
         }
-
-        // TODO
+        
         public IHitbox GetHitbox(int index)
         {
             if (Hitboxes.Length >= 0 && index < Hitboxes.Length)
                 return Hitboxes[index];
             else
                 return null;
+        }
+
+        public object Clone()
+        {
+            return new Frame()
+            {
+                SpriteSheet = SpriteSheet,
+                CollisionBox = CollisionBox,
+                Duration = Duration,
+                Id = Id,
+                X = X,
+                Y = Y,
+                Width = Width,
+                Height = Height,
+                CenterX = CenterX,
+                CenterY = CenterY,
+                Hitboxes = Hitboxes.Select(x => x.Clone() as Hitbox).ToArray()
+            };
         }
     }
 }

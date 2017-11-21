@@ -30,5 +30,16 @@ namespace RSDK3
             writer.Write((sbyte)Right);
             writer.Write((sbyte)Bottom);
         }
+
+        public object Clone()
+        {
+            return new Hitbox()
+            {
+                Left = Left,
+                Top = Top,
+                Right = Right,
+                Bottom = Bottom
+            };
+        }
     }
 }

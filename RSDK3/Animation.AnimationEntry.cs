@@ -31,7 +31,7 @@ namespace RSDK3
     {
         public string Name { get; set; }
 
-        public List<Frame> Frames { get; } = new List<Frame>();
+        public List<Frame> Frames { get; private set; } = new List<Frame>();
 
         public int Speed { get; set; }
 
@@ -104,6 +104,18 @@ namespace RSDK3
         {
             return string.IsNullOrEmpty(Name) ?
                 "<new animation>" : Name;
+        }
+
+        public object Clone()
+        {
+            return new AnimationEntry()
+            {
+                Name = Name,
+                Frames = Frames.Select(x => x.Clone() as Frame).ToList(),
+                Speed = Speed,
+                Loop = Loop,
+                Flags = Flags
+            };
         }
     }
 }

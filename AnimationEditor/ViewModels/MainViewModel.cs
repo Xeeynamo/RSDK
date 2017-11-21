@@ -21,6 +21,17 @@ namespace AnimationEditor.ViewModels
             public int Right { get; set; }
             public int Bottom { get; set; }
 
+            public object Clone()
+            {
+                return new DummyHitbox()
+                {
+                    Left = Left,
+                    Top = Top,
+                    Right = Right,
+                    Bottom = Bottom
+                };
+            }
+
             public void SaveChanges(BinaryWriter writer)
             {
             }
@@ -547,31 +558,8 @@ namespace AnimationEditor.ViewModels
         public void DupeFrame()
         {
             var selectedFrame = SelectedFrame;
-
-            _animationData.Factory(out IFrame newFrame);
-            newFrame.X = selectedFrame.X;
-            newFrame.Y = selectedFrame.Y;
-            newFrame.Width = selectedFrame.Width;
-            newFrame.Height = selectedFrame.Height;
-            newFrame.CollisionBox = selectedFrame.CollisionBox;
-            newFrame.SpriteSheet = selectedFrame.SpriteSheet;
-            newFrame.CenterX = selectedFrame.CenterX;
-            newFrame.CenterY = selectedFrame.CenterY;
-
-            if (newFrame is RSDK5.Frame new5Frame &&
-                selectedFrame is RSDK5.Frame selected5Frame)
-            {
-                new5Frame.Duration = selected5Frame.Duration;
-
-                // Duplicates hitboxes too.
-                new5Frame.Hitboxes = new RSDK5.Hitbox[selected5Frame.Hitboxes?.Length ?? 0];
-                for (int i = 0; i < new5Frame.Hitboxes.Length; i++)
-                {
-                    var hitBox = new RSDK5.Hitbox();
-                    new5Frame.Hitboxes[i] = hitBox;
-                }
-            }
-            FrameAdd(newFrame, SelectedFrameIndex);
+            if (selectedFrame != null)
+                FrameAdd(selectedFrame.Clone() as IFrame, SelectedFrameIndex);
         }
 
         public void FrameRemove()

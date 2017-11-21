@@ -30,5 +30,16 @@ namespace RSDK5
             writer.Write((short)Right);
             writer.Write((short)Bottom);
         }
+
+        public object Clone()
+        {
+            return new Hitbox()
+            {
+                Left = Left,
+                Top = Top,
+                Right = Right,
+                Bottom = Bottom
+            };
+        }
     }
 }
