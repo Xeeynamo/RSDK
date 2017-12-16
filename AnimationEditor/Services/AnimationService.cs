@@ -41,6 +41,9 @@ namespace AnimationEditor.Services
         private IAnimationEntry _currentAnimation;
         private IFrame _currentFrame;
         private Dictionary<string, IAnimationEntry> _dicAnimations;
+        private long _previousTime;
+        private long _discardedTime;
+        private object _lockTime = new object();
 
         public event Action<AnimationService> OnFrameChanged;
 
@@ -175,49 +178,77 @@ namespace AnimationEditor.Services
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            if (IsRunning)
+            {
+                var currentTime = Stopwatch.ElapsedMilliseconds;
+                lock (_lockTime)
+                {
+                    var elapsed = _discardedTime + (currentTime - _previousTime);
+                    _previousTime = currentTime;
+                    _discardedTime = Update(elapsed);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update animation state by the specified number of milliseconds.
+        /// </summary>
+        /// <param name="ms">Number of elapsed milliseconds.</param>
+        /// <returns>Discarded milliseconds.</returns>
+        private long Update(long ms)
+        {
             var curAnim = CurrentAnimation;
-            if (curAnim == null) return;
-            if (IsRunning == false) return;
-            if ((CurrentAnimation?.Speed ?? 0) <= 0) return;
+            if (ms < 0 || curAnim == null ||
+                (CurrentAnimation?.Speed ?? 0) <= 0)
+                return 0;
 
             int framesCount = curAnim.GetFrames().Count();
             int loop = curAnim.Loop;
-            if (framesCount <= 0) return;
+            if (framesCount <= 0)
+                return 0;
 
-            var currentFrame = curAnim.GetFrames()
-                .Skip(FrameIndex)
-                .FirstOrDefault();
-            int frameSpeed;
-            if (currentFrame is RSDK5.Frame current5Frame)
+            const int Divisor = 1024;
+            var baseSpeed = CurrentAnimation.Speed;
+            long prevMs;
+            do
             {
-                frameSpeed = current5Frame.Duration;
-            }
-            else
-            {
-                frameSpeed = 256;
-            }
-
-            double freq = 1.0 / ((double)CurrentAnimation.Speed / frameSpeed * 64.0);
-            double timer = Stopwatch.ElapsedMilliseconds;
-            var index = (int)Math.Floor(timer / (freq * 1000.0));
-            if (index >= 0)
-            {
-                if (index >= framesCount)
+                prevMs = ms;
+                var frameSpeed = CurrentFrame?.Duration ?? 256;
+                if (frameSpeed > 0)
                 {
-                    if (curAnim.Loop == 0)
+                    var realSpeed = (baseSpeed * 64 / frameSpeed);
+                    if (realSpeed > 0)
                     {
-                        FrameIndex = index % framesCount;
-                    }
-                    else if (curAnim.Loop < framesCount)
-                    {
-                        FrameIndex = loop + ((index - loop) % (framesCount - loop));
+                        var acutalSpeed = Divisor / realSpeed;
+                        if (ms > acutalSpeed && acutalSpeed > 0)
+                        {
+                            ms -= acutalSpeed;
+                            FrameIndex = BoundFrameIndex(FrameIndex + 1, curAnim.Loop, framesCount);
+                        }
                     }
                 }
-                else
-                {
-                    FrameIndex = index;
-                }
+            } while (prevMs != ms);
+            return ms;
+        }
+
+        /// <summary>
+        /// Move between frames index without to exit from frames boundaries.
+        /// </summary>
+        /// <param name="index">Frame index to adjust.</param>
+        /// <param name="loop">Loop index</param>
+        /// <param name="framesCount">Total number of frames.</param>
+        /// <returns>New frame index</returns>
+        private int BoundFrameIndex(int index, int loop, int framesCount)
+        {
+            if (index >= framesCount)
+            {
+                index = loop >= index ? framesCount - 1 : loop;
             }
+            else if (index < 0)
+            {
+                index = 0;
+            }
+            return index;
         }
     }
 }

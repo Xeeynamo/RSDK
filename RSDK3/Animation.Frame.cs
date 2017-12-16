@@ -31,6 +31,12 @@ namespace RSDK3
 
         public int CollisionBox { get; set; }
 
+        public int Duration
+        {
+            get => 256;
+            set { }
+        }
+
         public int X { get; set; }
 
         public int Y { get; set; }

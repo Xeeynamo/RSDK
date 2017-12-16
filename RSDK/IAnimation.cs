@@ -58,6 +58,8 @@ namespace RSDK
 
         int CenterY { get; set; }
 
+        int Duration { get; set; }
+
         IHitbox GetHitbox(int index);
     }
 
