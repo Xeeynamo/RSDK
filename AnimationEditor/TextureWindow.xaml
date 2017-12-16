@@ -31,12 +31,12 @@
                 <Image Width="16" Source="{StaticResource OpenFileDialog_16x}"/>
                 <Button.ToolTip>
                     <StackPanel>
-                        <Label>Change current texture with a new one.</Label>
+                        <Label>Replace current texture with a new one.</Label>
                     </StackPanel>
                 </Button.ToolTip>
             </Button>
             <Button x:Name="ButtonFramesExport" DockPanel.Dock="Right" Click="ButtonFramesExport_Click"
-                    IsEnabled="{Binding IsValueSelected}">
+                    IsEnabled="False" Visibility="Collapsed">
                 <Image Width="16" Source="{StaticResource AddRowToAbove_16x}"/>
                 <Button.ToolTip>
                     <StackPanel>
@@ -45,7 +45,7 @@
                 </Button.ToolTip>
             </Button>
             <Button x:Name="ButtonFramesImport" DockPanel.Dock="Right" Click="ButtonFramesImport_Click"
-                    IsEnabled="{Binding IsValueSelected}">
+                    IsEnabled="False" Visibility="Collapsed">
                 <Image Width="16" Source="{StaticResource AddRowToBelow_16x}"/>
                 <Button.ToolTip>
                     <StackPanel>

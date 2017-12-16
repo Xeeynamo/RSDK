@@ -42,12 +42,13 @@ namespace AnimationEditor.ViewModels
             { }
         }
 
-        private string _pathMod;
         private string _fileName;
         private IAnimation _animationData;
         private IAnimationEntry _selectedAnimation;
         private SpriteService _spriteService;
         private AnimationService _animService;
+
+        public string PathMod { get; set; }
 
         #region Animation data
 
@@ -75,7 +76,7 @@ namespace AnimationEditor.ViewModels
             {
                 _animationData = value;
                 var basePath = Path.GetDirectoryName(_fileName);
-                basePath = Path.Combine(basePath, _pathMod);
+                basePath = Path.Combine(basePath, PathMod);
 
                 Textures = new ObservableCollection<string>(_animationData.SpriteSheets);
                 Animations = new ObservableCollection<IAnimationEntry>(_animationData.GetAnimations());
@@ -495,11 +496,11 @@ namespace AnimationEditor.ViewModels
                         switch (ext)
                         {
                             case ".ani":
-                                _pathMod = "..\\sprites";
+                                PathMod = "..\\sprites";
                                 AnimationData = new RSDK3.Animation(reader);
                                 break;
                             case ".bin":
-                                _pathMod = "..";
+                                PathMod = "..";
                                 AnimationData = new RSDK5.Animation(reader);
                                 return false;
                             default:

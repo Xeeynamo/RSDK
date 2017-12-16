@@ -229,8 +229,10 @@ namespace AnimationEditor
         private void MenuViewTexture_Click(object sender, RoutedEventArgs e)
         {
             if (ViewModel.IsAnimationDataLoaded)
-                new TextureWindow(ViewModel, new DirectoryInfo(Path.GetDirectoryName(ViewModel.FileName))
-                    .Parent.FullName).Show();
+            {
+                var basePath = Path.Combine(Path.GetDirectoryName(ViewModel.FileName), ViewModel.PathMod);
+                new TextureWindow(ViewModel, basePath).Show();
+            }
         }
 
         private void MenuViewHitbox_Click(object sender, RoutedEventArgs e)

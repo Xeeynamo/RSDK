@@ -39,7 +39,7 @@ namespace AnimationEditor
 
         private void ButtonChange_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.ImagePng);
+            var dialog = FileDialog.Factory(this, FileDialog.Behavior.Open, FileDialog.Type.ImageGif);
             if (dialog.ShowDialog() == true)
             {
                 var fileName = AddTextureToDirectory(dialog.FileName);
@@ -126,18 +126,23 @@ namespace AnimationEditor
         /// <returns>File name only</returns>
         private string AddTextureToDirectory(string filePath)
         {
-            var fileName = filePath.Substring(BasePath.Length + 1);
-            var outputPath = Path.Combine(BasePath, fileName);
+            var basePath = Path.GetFullPath(BasePath);
+
+            var fileName = filePath.Substring(basePath.Length + 1);
+            var outputPath = Path.Combine(basePath, fileName);
             if (Path.GetFullPath(filePath) != outputPath)
             {
-                try
+                if (!File.Exists(outputPath))
                 {
-                    File.Copy(filePath, outputPath);
-                }
-                catch (Exception e)
-                {
-                    //Log.Error(e.Message);
-                    fileName = null;
+                    try
+                    {
+                        File.Copy(filePath, outputPath);
+                    }
+                    catch (Exception e)
+                    {
+                        //Log.Error(e.Message);
+                        fileName = null;
+                    }
                 }
             }
             else
