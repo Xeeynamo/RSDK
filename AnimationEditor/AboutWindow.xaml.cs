@@ -24,7 +24,7 @@ namespace AnimationEditor
             get
             {
                 var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
-                return $"{version.Major}.{version.Minor}";
+                return $"{version.Major}.{version.Minor}.{version.Build}";
             }
         }
 
