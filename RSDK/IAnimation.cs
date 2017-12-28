@@ -46,6 +46,8 @@ namespace RSDK
 
         int CollisionBox { get; set; }
 
+        int Id { get; set; }
+
         int X { get; set; }
 
         int Y { get; set; }

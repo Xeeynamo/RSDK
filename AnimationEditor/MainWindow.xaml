@@ -361,7 +361,7 @@
                                 <TextBlock Grid.Column="0" Grid.Row="7" Text="ID"/>
                                 <xc:NumericUpDown Grid.Column="1" Grid.Row="7"
                                     MinimumValue="0" MaximumValue="65535"
-                                    Value="{Binding SelectedFrameID, Mode=TwoWay}"/>
+                                    Value="{Binding SelectedFrameId, Mode=TwoWay}"/>
                                 <TextBlock Grid.Column="3" Grid.Row="7" Text="Duration"/>
                                 <xc:NumericUpDown Grid.Column="4" Grid.Row="7"
                                     MinimumValue="0" MaximumValue="65535"

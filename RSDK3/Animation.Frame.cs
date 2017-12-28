@@ -31,6 +31,8 @@ namespace RSDK3
 
         public int CollisionBox { get; set; }
 
+        public int Id { get => 0; set { } }
+
         public int Duration
         {
             get => 256;
@@ -63,6 +65,7 @@ namespace RSDK3
         {
             SpriteSheet = reader.ReadByte();
             CollisionBox = reader.ReadByte();
+            Id = 0;
             X = reader.ReadByte();
             Y = reader.ReadByte();
             Width = reader.ReadByte();

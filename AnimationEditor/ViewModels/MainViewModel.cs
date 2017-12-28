@@ -357,7 +357,7 @@ namespace AnimationEditor.ViewModels
             }
         }
 
-        public ushort SelectedFrameId
+        public int SelectedFrameId
         {
             get => (SelectedFrame as RSDK5.Frame)?.Id ?? 0;
             set

@@ -37,7 +37,7 @@ namespace RSDK5
 
         public int Duration { get; set; }
 
-        public ushort Id { get; set; }
+        public int Id { get; set; }
 
         public int X { get; set; }
 
