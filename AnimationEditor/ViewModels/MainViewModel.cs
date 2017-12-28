@@ -700,6 +700,8 @@ namespace AnimationEditor.ViewModels
 
         public void SaveChanges()
         {
+            _animationData.SpriteSheets.Clear();
+            _animationData.SpriteSheets.AddRange(Textures);
             _animationData.SetAnimations(Animations);
             if (IsHitboxV3)
             {

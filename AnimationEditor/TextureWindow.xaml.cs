@@ -61,7 +61,6 @@ namespace AnimationEditor
                 if (fileName != null)
                 {
                     ViewModel.AddTexture(fileName);
-                    MainViewModel.AnimationData.SpriteSheets.Add(fileName);
                     SelectedIndex = ViewModel.Count - 1;
                 }
             }

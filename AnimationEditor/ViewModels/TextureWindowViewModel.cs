@@ -33,7 +33,10 @@ namespace AnimationEditor.ViewModels
             set
             {
                 _selectedValue = value;
-                CurrentTexture = new TextureViewModel(value, BasePath);
+                if (_selectedValue != null)
+                    CurrentTexture = new TextureViewModel(value, BasePath);
+                else
+                    CurrentTexture = null;
                 OnPropertyChanged(nameof(SelectedValue));
                 OnPropertyChanged(nameof(IsValueSelected));
                 OnPropertyChanged(nameof(CurrentTexture));
